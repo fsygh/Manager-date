@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Manager-date.iml" filepath="$PROJECT_DIR$/Manager-date.iml" />
       <module fileurl="file://D:\miaomiao\homework\Manager-date-master\Manager-date.iml" filepath="D:\miaomiao\homework\Manager-date-master\Manager-date.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Manager-date-master.iml" filepath="$PROJECT_DIR$/Manager-date-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
