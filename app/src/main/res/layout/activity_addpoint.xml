@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="300px"
+        android:layout_height="200px"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="目标设定"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:layout_weight="0.10" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color2"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:background="@null"
+            android:gravity="center"
+            android:text="目标名 :   "
+            android:textColor="@color/color4"
+            android:textSize="15sp" />
+        <EditText
+            android:id="@+id/textView3_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/select_date"
+            android:textColor="@color/color3"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/selectDate"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@color/color2"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/current_date"
+            android:textColor="@color/color4"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/currentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:gravity="center"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/color5"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/select_time"
+            android:textColor="@color/color3"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/selectTime"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color2"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/current_time"
+            android:textColor="@color/color4"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/currentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:gravity="center"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/color5"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下一步"
+            android:layout_marginRight="55dp"
+            android:layout_marginEnd="55dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回上一步"
+            android:layout_alignBaseline="@+id/next_button"
+            android:layout_alignBottom="@+id/next_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="46dp"
+            android:layout_marginStart="46dp" />
+    </RelativeLayout>
+
+</TableLayout>
+
+
+

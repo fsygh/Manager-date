@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="fill_parent"
+        android:layout_height="113dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="分解目标设定"
+        android:textAlignment="center"
+        android:textSize="25sp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/add_one_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="增加" />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/delete_one_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:layout_weight="0.34">
+
+        <LinearLayout
+            android:id="@+id/list_Lin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- 动态生成部分开始 -->
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip"
+                    android:layout_marginRight="10dip"
+                    android:layout_toLeftOf="@+id/image"
+
+                    android:orientation="horizontal"
+                    android:padding="5dip"
+                    android:weightSum="1">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="示例：分解目标:"
+                        android:textColor="#ff000000"
+                        android:textSize="20dip"
+                        android:gravity="center" />
+
+                    <EditText
+                        android:id="@+id/editText1"
+                        android:layout_width="400px"
+                        android:layout_height="wrap_content"
+                        android:hint="输入目标名字"
+                        android:focusable="false"
+                        android:textSize="20dip"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <!-- 动态生成部分结束 -->
+
+        </LinearLayout>
+
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下一步" />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回" />
+    </LinearLayout>
+
+</LinearLayout>

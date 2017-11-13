@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:id="@+id/goal_name"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/goal_description"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/end_time"
+        />
+
+
+    <ListView
+        android:layout_marginTop="10dp"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:id="@+id/small_goal_list"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+</LinearLayout>
