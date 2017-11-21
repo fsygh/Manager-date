@@ -26,10 +26,10 @@
     <string name="hour">时</string>
     <string name="minute">分</string>
 
-    <string name="select_date">选择日期</string>
-    <string name="current_date">当前日期</string>
-    <string name="select_time">选择时间</string>
-    <string name="current_time">目标时间</string>
+    <string name="select_date">选择目标开始日期</string>
+    <string name="current_date">开始日期</string>
+    <string name="select_time">选择目标结束日期</string>
+    <string name="current_time">结束时间</string>
     <string name="hint_operator_name">你好</string>
     <string name="hello">Hello World, Date!</string>
 
