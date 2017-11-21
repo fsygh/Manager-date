@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class AddDescription extends AppCompatActivity implements View.OnClickListener{
     private Button okButton;
     private Button  backButton;
+    private CustomToolBar  customToolBar;
     private AutoCompleteTextView textDescription;
     public static  String description="";
     private static Addpoint ap=new Addpoint();
@@ -22,23 +23,28 @@ public class AddDescription extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_adddescription);
         okButton=(Button)findViewById(R.id.ok_button);
         okButton.setOnClickListener(this);
-        backButton=(Button)findViewById(R.id.back_button);
-        backButton.setOnClickListener(this);
         textDescription=(AutoCompleteTextView)findViewById(R.id.editText1);
         if (mUserDataManager == null) {
             mUserDataManager = new GoalDataManager(this,"test");
             mUserDataManager.openDataBase();                              //建立本地数据库
         }
+        customToolBar = (CustomToolBar) findViewById(R.id.customToolbar);
+        customToolBar.setToolBarClick(new CustomToolBar.ToolBarClick() {
+            @Override
+            public void leftClick() {
+                Intent intent1=new Intent(AddDescription.this,AddSmallPoint.class);
+                startActivity(intent1);
+
+            }
+            public void rightClick() {
+
+            }
+
+        });
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back_button:
-
-                Intent intent1=new Intent(AddDescription.this,AddSmallPoint.class);
-                startActivity(intent1);
-                break;
-
             case R.id.ok_button:
                 description=textDescription.getText().toString();
                 dealData();

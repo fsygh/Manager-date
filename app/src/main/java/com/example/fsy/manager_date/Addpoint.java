@@ -34,6 +34,8 @@ public class Addpoint extends AppCompatActivity implements View.OnClickListener 
         text1=(EditText)findViewById(R.id.textView3_text);
         selectTime = (RelativeLayout) findViewById(R.id.selectTime);
         selectTime.setOnClickListener(this);
+        selectDate = (RelativeLayout) findViewById(R.id.selectDate);
+        selectDate.setOnClickListener(this);
         currentDate = (TextView) findViewById(R.id.currentDate);
         currentTime = (TextView) findViewById(R.id.currentTime);
         backAcitivity=(Button)findViewById(R.id.back_button) ;
@@ -47,6 +49,11 @@ public class Addpoint extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.selectDate:
+                // 日期格式为yyyy-MM-dd
+                customDatePicker1.show(currentDate.getText().toString());
+                break;
+
             case R.id.selectTime:
                 // 日期格式为yyyy-MM-dd HH:mm
                 customDatePicker2.show(currentTime.getText().toString());
@@ -82,6 +89,14 @@ public class Addpoint extends AppCompatActivity implements View.OnClickListener 
         currentDate.setText(now.split(" ")[0]);
         currentTime.setText(now);
 
+        customDatePicker1 = new CustomDatePicker(this, new CustomDatePicker.ResultHandler() {
+            @Override
+            public void handle(String time) { // 回调接口，获得选中的时间
+                currentDate.setText(time.split(" ")[0]);
+            }
+        }, "2010-01-01 00:00", now); // 初始化日期格式请用：yyyy-MM-dd HH:mm，否则不能正常运行
+        customDatePicker1.showSpecificTime(true); // 不显示时和分
+        customDatePicker1.setIsLoop(true); // 不允许循环滚动
 
         customDatePicker2 = new CustomDatePicker(this, new CustomDatePicker.ResultHandler() {
             @Override
