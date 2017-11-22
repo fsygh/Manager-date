@@ -26,6 +26,7 @@ public class Addpoint extends AppCompatActivity implements View.OnClickListener 
     private CustomDatePicker customDatePicker1, customDatePicker2;
     private Button backAcitivity,nextPage;
     private EditText text1;
+    private CustomToolBar  customToolBar;
     public static String saveText="";
     public  static  String saveTime="";
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +39,19 @@ public class Addpoint extends AppCompatActivity implements View.OnClickListener 
         selectDate.setOnClickListener(this);
         currentDate = (TextView) findViewById(R.id.currentDate);
         currentTime = (TextView) findViewById(R.id.currentTime);
-        backAcitivity=(Button)findViewById(R.id.back_button) ;
-        backAcitivity.setOnClickListener(this);
         nextPage=(Button)findViewById(R.id.next_button);
         nextPage.setOnClickListener(this);
+        customToolBar = (CustomToolBar) findViewById(R.id.customToolbar);
+        customToolBar.setToolBarClick(new CustomToolBar.ToolBarClick() {
+            @Override
+            public void leftClick() {
+                Intent intent1=new Intent(Addpoint.this,Welcomepage.class);
+                saveTime="";
+                startActivity(intent1);
 
+            }
+            public void rightClick() {}
+        });
         initDatePicker();
     }
 
@@ -57,11 +66,6 @@ public class Addpoint extends AppCompatActivity implements View.OnClickListener 
             case R.id.selectTime:
                 // 日期格式为yyyy-MM-dd HH:mm
                 customDatePicker2.show(currentTime.getText().toString());
-                break;
-            case R.id.back_button:
-                Intent intent=new Intent(Addpoint.this,Welcomepage.class);
-                saveTime="";
-                startActivity(intent);
                 break;
 
             case R.id.next_button:

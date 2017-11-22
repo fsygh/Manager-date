@@ -3,13 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
+    android:background="#f4f4f4"
     android:weightSum="1">
     <com.example.fsy.manager_date.CustomToolBar
         android:id="@+id/customToolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:leftImage="@drawable/ic_arrow_back_white_24dp" />
-
+        android:layout_height="wrap_content"
+        app:leftImage="@mipmap/icon_back" />
+    <include layout="@layout/include_line"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="87dp"
@@ -21,24 +22,40 @@
         android:textSize="25sp" />
 
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:text="描述:"
-        android:textSize="21sp" />
 
-    <AutoCompleteTextView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4px"
+        android:background="@drawable/shape_virtual_line"
+        android:layerType="software" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37px"
+        android:text="对目标我有话要说:"
+        android:background="@android:color/white"
+        android:textColor="#adadad"
+        android:textSize="28px" />
+    <EditText
+        android:gravity="top"
         android:id="@+id/editText1"
         android:layout_width="match_parent"
-        android:layout_height="500px"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/shape_corner" />
+        android:layout_height="200dp"
+        android:background="@android:color/white"
+        android:lineSpacingExtra="3dp"
+        android:maxLength="300"
+        android:textColor="#413e3e"
+        android:textColorHint="#adadad"
+        android:textSize="35px" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4px"
+        android:background="@drawable/shape_virtual_line"
+        android:layerType="software" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#dddddd" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,13 +64,12 @@
 
         <Button
             android:id="@+id/ok_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-
-            android:shadowColor="@color/color3"
-            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:background="@drawable/button"
             android:text="完成" />
 
 

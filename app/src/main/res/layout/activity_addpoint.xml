@@ -2,7 +2,18 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:weightSum="1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <com.example.fsy.manager_date.CustomToolBar
+            android:id="@+id/customToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftImage="@mipmap/icon_back" />
+        <include layout="@layout/include_line"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView2"
@@ -146,31 +157,24 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp">
-        <Button
-            android:id="@+id/next_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="下一步"
-            android:layout_marginRight="55dp"
-            android:layout_marginEnd="55dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
 
         <Button
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
+            android:id="@+id/next_button"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="返回上一步"
-            android:layout_alignBaseline="@+id/next_button"
-            android:layout_alignBottom="@+id/next_button"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="46dp"
-            android:layout_marginStart="46dp" />
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="138dp"
+            android:layout_marginStart="138dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button"
+            android:text="下一步" />
+
     </RelativeLayout>
 
 </TableLayout>

@@ -1,35 +1,37 @@
 package com.example.fsy.manager_date;
 
 
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.Toast;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View.OnClickListener;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class Register extends AppCompatActivity{
+public class Register extends AppCompatActivity implements OnClickListener{
     private EditText mAccount;                        //用户名编辑
     private EditText mPwd;                            //密码编辑
     private EditText mPwdCheck;                       //密码编辑
-    private Button mSureButton;                       //确定按钮
-    private Button mCancelButton;                     //取消按钮
+    private TextView mSureButton;                       //确定按钮
+    private ImageView mCancelButton;                      //取消按钮
     private UserDataManager mUserDataManager;         //用户数据管理类
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register);
+        setContentView(R.layout.activity_register);
         mAccount = (EditText) findViewById(R.id.resetpwd_edit_name);
         mPwd = (EditText) findViewById(R.id.resetpwd_edit_pwd_old);
         mPwdCheck = (EditText) findViewById(R.id.resetpwd_edit_pwd_new);
 
-        mSureButton = (Button) findViewById(R.id.register_btn_sure);
-        mCancelButton = (Button) findViewById(R.id.register_btn_cancel);
+        mSureButton = (TextView) findViewById(R.id.register_btn_sure);
+        mCancelButton = (ImageView) findViewById(R.id.register_btn_cancel);
 
-        mSureButton.setOnClickListener(m_register_Listener);      //注册界面两个按钮的监听事件
-        mCancelButton.setOnClickListener(m_register_Listener);
+        mSureButton.setOnClickListener(this);      //注册界面两个按钮的监听事件
+        mCancelButton.setOnClickListener(this);
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
@@ -37,7 +39,6 @@ public class Register extends AppCompatActivity{
         }
 
     }
-    View.OnClickListener m_register_Listener = new View.OnClickListener() {    //不同按钮按下的监听事件选择
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.register_btn_sure: {                      //确认按钮的监听事件
@@ -50,7 +51,6 @@ public class Register extends AppCompatActivity{
                     break;}
             }
         }
-    };
     public void register_check() {                                //确认按钮的监听事件
         if (isUserNameAndPwdValid()) {
             String userName = mAccount.getText().toString().trim();
