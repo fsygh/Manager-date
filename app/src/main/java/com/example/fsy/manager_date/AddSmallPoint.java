@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 	private ImageButton addOne;
 	private EditText text1;
 	private Button getvalue1;
+	private ImageView mBack;
 	public static String allSmallPoint="";
 	public static int numberSmallPoint=0;
 
@@ -30,7 +32,9 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_addsmallpoint);
-		//按钮及事件响应
+
+		mBack=(ImageView)findViewById(R.id.btn_back);
+		mBack.setOnClickListener(this);
 		getvalue1 = (Button) findViewById(R.id.get_value);
 		getvalue1.setOnClickListener(this);
 		addOne = (ImageButton) findViewById(R.id.addone);
@@ -72,13 +76,20 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 						@SuppressWarnings("unchecked")
 						HashMap<String, Object> map1 = (HashMap<String, Object>) listItemAdapter.getItem(j);
 						String username = map1.get("friend_username").toString();
-						allSmallPoint+=username+"";
+						allSmallPoint=allSmallPoint+ username+"";
 						numberSmallPoint++;
 					}
 				}
 				Intent intent2=new Intent(AddSmallPoint.this,AddDescription.class);
 				startActivity(intent2);
 				break;
+
+			case R.id.btn_back:
+				Intent intent=new Intent(AddSmallPoint.this,Addpoint.class);
+				startActivity(intent);
+				numberSmallPoint=0;
+				allSmallPoint="";
+
 		}
 	}
 }

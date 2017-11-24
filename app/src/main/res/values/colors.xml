@@ -22,4 +22,5 @@
     <color name="color_user">#E9967A</color>
     <color name="black">#000000</color>
     <color name="orange">#FF6600</color>
+    <color name="lightgray">#d3d3d3</color>
 </resources>
