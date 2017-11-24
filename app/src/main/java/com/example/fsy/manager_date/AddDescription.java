@@ -48,8 +48,8 @@ public class AddDescription extends AppCompatActivity implements View.OnClickLis
             case R.id.ok_button:
                 description=textDescription.getText().toString();
                 dealData();
-               Intent intent2=new Intent(AddDescription.this,Welcomepage.class);
-               startActivity(intent2);
+                Intent intent2=new Intent(AddDescription.this,Welcomepage.class);
+                startActivity(intent2);
                 break;
 
         }
