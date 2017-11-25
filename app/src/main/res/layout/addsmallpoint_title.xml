@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dip"
-    android:background="@color/lightgray"
+    android:background="@color/white"
     android:gravity="center_vertical"
     android:padding="10dip" >
 
@@ -9,15 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_back"
-        android:src="@drawable/back" />
+        android:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:textSize="40px"
-        android:text="分解目标"/>
+
 
 </RelativeLayout>

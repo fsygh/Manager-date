@@ -3,7 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_dehaze_black_24dp"
             android:title="个人资料" />
         <item
             android:id="@+id/nav_gallery"
@@ -14,5 +14,11 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="注销登录" />
+
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_close_black_24dp"
+            android:title="退出"/>
+
     </group>
 </menu>

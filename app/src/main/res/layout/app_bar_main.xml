@@ -43,5 +43,5 @@
         <include layout="@layout/content_main" />
         <!--app:srcCompat="@android:drawable/ic_dialog_email"-->
 
-    </android.support.design.widget.CoordinatorLayout>>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

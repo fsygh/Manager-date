@@ -76,10 +76,11 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 						@SuppressWarnings("unchecked")
 						HashMap<String, Object> map1 = (HashMap<String, Object>) listItemAdapter.getItem(j);
 						String username = map1.get("friend_username").toString();
-						allSmallPoint=allSmallPoint+ username+"";
+						allSmallPoint=allSmallPoint+ username+" ";
 						numberSmallPoint++;
 					}
 				}
+				Toast.makeText(this,allSmallPoint,Toast.LENGTH_LONG).show();
 				Intent intent2=new Intent(AddSmallPoint.this,AddDescription.class);
 				startActivity(intent2);
 				break;
