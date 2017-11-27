@@ -90,13 +90,13 @@ public class Addpoint extends AppCompatActivity implements View.OnClickListener 
     private void initDatePicker() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
         String now = sdf.format(new Date());
-        currentDate.setText(now.split(" ")[0]);
+        currentDate.setText(now);
         currentTime.setText(now);
 
         customDatePicker1 = new CustomDatePicker(this, new CustomDatePicker.ResultHandler() {
             @Override
             public void handle(String time) { // 回调接口，获得选中的时间
-                currentDate.setText(time.split(" ")[0]);
+                currentDate.setText(time);
             }
         }, "2010-01-01 00:00", now); // 初始化日期格式请用：yyyy-MM-dd HH:mm，否则不能正常运行
         customDatePicker1.showSpecificTime(true); // 不显示时和分

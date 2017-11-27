@@ -24,6 +24,7 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 	private ImageView mBack;
 	public static String allSmallPoint="";
 	public static int numberSmallPoint=0;
+	private String preSmallPoint="";
 
 	/**
 	 * Called when the activity is first created.
@@ -32,7 +33,6 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_addsmallpoint);
-
 		mBack=(ImageView)findViewById(R.id.btn_back);
 		mBack.setOnClickListener(this);
 		getvalue1 = (Button) findViewById(R.id.get_value);
@@ -40,7 +40,17 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 		addOne = (ImageButton) findViewById(R.id.addone);
 		addOne.setOnClickListener(this);
 		text1 = (EditText) findViewById(R.id.text1);
-		//listview
+		if(!preSmallPoint.equals(""))
+		{
+			ListView list = (ListView) findViewById(R.id.list);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			listItemAdapter = new CheckboxAdapter(this, listData);
+			list.setAdapter(listItemAdapter);
+		}
+		else
+		{
+			listData.clear();
+		}
 
 	}
 
@@ -80,12 +90,12 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 						numberSmallPoint++;
 					}
 				}
-				Toast.makeText(this,allSmallPoint,Toast.LENGTH_LONG).show();
 				Intent intent2=new Intent(AddSmallPoint.this,AddDescription.class);
 				startActivity(intent2);
 				break;
 
 			case R.id.btn_back:
+				preSmallPoint=allSmallPoint;
 				Intent intent=new Intent(AddSmallPoint.this,Addpoint.class);
 				startActivity(intent);
 				numberSmallPoint=0;

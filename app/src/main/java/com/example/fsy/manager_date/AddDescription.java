@@ -32,6 +32,7 @@ public class AddDescription extends AppCompatActivity implements View.OnClickLis
         customToolBar.setToolBarClick(new CustomToolBar.ToolBarClick() {
             @Override
             public void leftClick() {
+                textDescription.setText(textDescription.getText().toString());
                 Intent intent1=new Intent(AddDescription.this,AddSmallPoint.class);
                 startActivity(intent1);
 
