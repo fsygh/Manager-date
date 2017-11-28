@@ -127,8 +127,10 @@ public class Welcomepage extends AppCompatActivity
             Toast.makeText(this, "注销成功", Toast.LENGTH_LONG).show();
 
         }
-
-
+        else if(id==R.id.nav_exit)
+        {
+            System.exit(0);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
