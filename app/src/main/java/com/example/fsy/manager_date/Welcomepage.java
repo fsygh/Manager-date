@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -27,7 +28,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -355,9 +355,13 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
 
                             // 服务端返回的JsonObject对象中提取到图片的网络URL路径
                             String imageUrl = jsonObject.optString("imageUrl");
+                            Looper.prepare();
                             Toast.makeText(mContext, imageUrl, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
                         } else {
+                            Looper.prepare();
                             Toast.makeText(mContext, jsonObject.optString("statusMessage"), Toast.LENGTH_SHORT).show();
+                            Looper.loop();
                         }
 
                     } catch (JSONException e) {
