@@ -17,144 +17,144 @@ import android.view.View;
 import java.util.ArrayList;
 
 /**
- * ¶à½Úµã½ø¶ÈÌõ×Ô¶¨ÒåÊÓÍ¼
+ * å¤šèŠ‚ç‚¹è¿›åº¦æ¡è‡ªå®šä¹‰è§†å›¾
  * @author huqiang
  *
  */
 public class MutiProgress extends View {
 
-	private int nodesNum ; //½ÚµãÊıÁ¿
-	private Drawable progressingDrawable;  //½øĞĞÖĞµÄÍ¼±ê
-	private Drawable unprogressingDrawable;
-	private Drawable progresFailDrawable;  //Ê§°ÜµÄ½Úµã
-	private Drawable progresSuccDrawable;  //³É¹¦µÄ½Úµã
-	private int nodeRadius;  //½ÚµãµÄ°ë¾¶
-	private int processingLineColor;  //½ø¶ÈÌõµÄÑÕÉ«
-	
-//	private int progressLineHeight;   //½ø¶ÈÌõµÄ¸ß¶È
-	private int currNodeNO;  //µ±Ç°½øĞĞµ½µÄ½Úµã±àºÅ¡£´Ó0¿ªÊ¼¼ÆËã
-	private int currNodeState; //µ±Ç°½øĞĞµ½µÄ½Úµã±àºÅËù¶ÔÓ¦µÄ×´Ì¬ 0£ºÊ§°Ü  1£º³É¹¦
-//	private int textSize;  //×ÖÌå´óĞ¡
-	Context mContext;
-	
-	int mWidth,mHeight;
-	private Paint mPaint;
-	private Canvas mCanvas;
-	private Bitmap mBitmap; //mCanvas»æÖÆÔÚÕâÉÏÃæ
-	private ArrayList<Node> nodes;
-	
-	private int DEFAULT_LINE_COLOR = Color.BLUE;
-	public MutiProgress(Context context) {
-		this(context,null);
-		
-	}
-	public MutiProgress(Context context, AttributeSet attrs) {
-		this(context,attrs,0);
-	}
-	public MutiProgress(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		mContext = context;
-		
-		TypedArray mTypedArray = context.obtainStyledAttributes(attrs,R.styleable.MutiProgress);
-		nodesNum = 5; //Ä¬ÈÏÒ»¸ö½Úµã
-		nodeRadius = mTypedArray.getDimensionPixelSize(R.styleable.MutiProgress_nodeRadius, 10); //½Úµã°ë¾¶
-		progressingDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_progressingDrawable);
-		unprogressingDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_unprogressingDrawable);
-		progresFailDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_progresFailDrawable);
-		progresSuccDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_progresSuccDrawable);
-		processingLineColor = mTypedArray.getColor(R.styleable.MutiProgress_processingLineColor, DEFAULT_LINE_COLOR);
-		currNodeState = mTypedArray.getInt(R.styleable.MutiProgress_currNodeState, 1);
-		currNodeNO = mTypedArray.getInt(R.styleable.MutiProgress_currNodeNO, 1);
+    private int nodesNum ; //èŠ‚ç‚¹æ•°é‡
+    private Drawable progressingDrawable;  //è¿›è¡Œä¸­çš„å›¾æ ‡
+    private Drawable unprogressingDrawable;
+    private Drawable progresFailDrawable;  //å¤±è´¥çš„èŠ‚ç‚¹
+    private Drawable progresSuccDrawable;  //æˆåŠŸçš„èŠ‚ç‚¹
+    private int nodeRadius;  //èŠ‚ç‚¹çš„åŠå¾„
+    private int processingLineColor;  //è¿›åº¦æ¡çš„é¢œè‰²
 
-	}
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		mWidth = getMeasuredWidth();
-		mHeight = getMeasuredHeight();
-		
-		mBitmap = Bitmap.createBitmap(mWidth, mHeight, Config.ARGB_8888);
-		mPaint = new Paint();
-		mPaint.setColor(processingLineColor);
-		mPaint.setAntiAlias(true);
-		mPaint.setStrokeJoin(Paint.Join.ROUND); // Ô²½Ç
-		mPaint.setStrokeCap(Paint.Cap.ROUND); // Ô²½Ç
-		mCanvas = new Canvas(mBitmap);
-		
-		nodes = new ArrayList<Node>();
-		float nodeWidth = ((float)mWidth)/(nodesNum-1);
-		for(int i=0;i<nodesNum;i++)
-		{
-			Node node = new Node();
-			if(i==0)
-				node.mPoint = new Point(((int)nodeWidth*i),mHeight/2-nodeRadius);
-			else if(i==(nodesNum-1))
-				node.mPoint = new Point(((int)nodeWidth*i)-nodeRadius*2,mHeight/2-nodeRadius);
-			else
-				node.mPoint = new Point(((int)nodeWidth*i)-nodeRadius,mHeight/2-nodeRadius);
-			if(currNodeNO == i)
-				node.type = 1;  //µ±Ç°½ø¶ÈËùµ½´ïµÄ½Úµã
-			else
-				node.type = 0; //ÒÑÍê³É
-			nodes.add(node);
-		}
-	}
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		DrawProgerss();
-		Log.v("ondraw", "mBitmap="+mBitmap);
-		if(mBitmap!=null)
-		{
-			canvas.drawBitmap(mBitmap, new Rect(0,0,mBitmap.getWidth(),mBitmap.getHeight()), new Rect(0,0,mBitmap.getWidth(),mBitmap.getHeight()), mPaint);
-		}
-		for(int i=0;i<nodes.size();i++)
-		{
-			Node node = nodes.get(i);
-			Log.v("ondraw", node.mPoint.x +";y="+node.mPoint.y);
-			if(i<currNodeNO)  //ÒÑÍê³ÉµÄ½ø¶È½Úµã
-			{
-				progressingDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
-				progressingDrawable.draw(canvas);
-			}
-			else if(i==currNodeNO)  //µ±Ç°Ëùµ½´ïµÄ½ø¶È½Úµã£¨ÖÕµã£©
-			{
-				if(currNodeState == 1) //ÅĞ¶ÏÊÇ³É¹¦»¹ÊÇÊ§°Ü  0 :Ê§°Ü  1£º³É¹¦
-				{
-					progresSuccDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
-					progresSuccDrawable.draw(canvas);
-				}
-				else
-				{
-					progresFailDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
-					progresFailDrawable.draw(canvas);
-				}
-			}
-			else   //Î´Íê³ÉµÄ½ø¶È½Úµã
-			{
-				unprogressingDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
-				unprogressingDrawable.draw(canvas);
-			}
-		}
-	}
-	private void DrawProgerss()
-	{
-		//ÏÈ»­±³¾°
-		Paint bgPaint = new Paint();
-		bgPaint.setColor(Color.parseColor("#f0f0f0"));
-		mCanvas.drawRect(0, 0, mWidth, mHeight, bgPaint);
-		//ÏÈ»­Ïß¶Î£¬Ïß¶ÎµÄ¸ß¶ÈÎªnodeRadius/2
-		mPaint.setStrokeWidth(nodeRadius/2);
-		//Ç°°ë½ØÏß¶Î
-//		mCanvas.drawLine(nodeRadius, mHeight/2, mWidth-nodeRadius, mHeight/2, mPaint);  //Ïß¶Î2¶ËÈ¥µônodeRadius
-		mCanvas.drawLine(nodeRadius, mHeight/2, nodes.get(currNodeNO).mPoint.x + nodeRadius, nodes.get(currNodeNO).mPoint.y + nodeRadius, mPaint);  //Ïß¶Î2¶ËÈ¥µônodeRadius
-		//ºó°ë½ØÏß¶Î
-		mPaint.setColor(Color.parseColor("#dddddd"));
-		mCanvas.drawLine(nodes.get(currNodeNO).mPoint.x +nodeRadius, nodes.get(currNodeNO).mPoint.y + nodeRadius, mWidth-nodeRadius, mHeight/2, mPaint);  //Ïß¶Î2¶ËÈ¥µônodeRadius
-	}
-	class Node
-	{
-		Point mPoint;
-		int type; //0:ÒÑÍê³É  1:µ±Ç°µ½´ïµÄ½ø¶È½Úµã
-	}
+    //	private int progressLineHeight;   //è¿›åº¦æ¡çš„é«˜åº¦
+    private int currNodeNO;  //å½“å‰è¿›è¡Œåˆ°çš„èŠ‚ç‚¹ç¼–å·ã€‚ä»0å¼€å§‹è®¡ç®—
+    private int currNodeState; //å½“å‰è¿›è¡Œåˆ°çš„èŠ‚ç‚¹ç¼–å·æ‰€å¯¹åº”çš„çŠ¶æ€ 0ï¼šå¤±è´¥  1ï¼šæˆåŠŸ
+    //	private int textSize;  //å­—ä½“å¤§å°
+    Context mContext;
+
+    int mWidth,mHeight;
+    private Paint mPaint;
+    private Canvas mCanvas;
+    private Bitmap mBitmap; //mCanvasç»˜åˆ¶åœ¨è¿™ä¸Šé¢
+    private ArrayList<Node> nodes;
+
+    private int DEFAULT_LINE_COLOR = Color.BLUE;
+    public MutiProgress(Context context) {
+        this(context,null);
+
+    }
+    public MutiProgress(Context context, AttributeSet attrs) {
+        this(context,attrs,0);
+    }
+    public MutiProgress(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        mContext = context;
+
+        TypedArray mTypedArray = context.obtainStyledAttributes(attrs,R.styleable.MutiProgress);
+        nodesNum = 5; //é»˜è®¤ä¸€ä¸ªèŠ‚ç‚¹
+        nodeRadius = mTypedArray.getDimensionPixelSize(R.styleable.MutiProgress_nodeRadius, 10); //èŠ‚ç‚¹åŠå¾„
+        progressingDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_progressingDrawable);
+        unprogressingDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_unprogressingDrawable);
+        progresFailDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_progresFailDrawable);
+        progresSuccDrawable = mTypedArray.getDrawable(R.styleable.MutiProgress_progresSuccDrawable);
+        processingLineColor = mTypedArray.getColor(R.styleable.MutiProgress_processingLineColor, DEFAULT_LINE_COLOR);
+        currNodeState = mTypedArray.getInt(R.styleable.MutiProgress_currNodeState, 1);
+        currNodeNO = mTypedArray.getInt(R.styleable.MutiProgress_currNodeNO, 1);
+
+    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mWidth = getMeasuredWidth();
+        mHeight = getMeasuredHeight();
+
+        mBitmap = Bitmap.createBitmap(mWidth, mHeight, Config.ARGB_8888);
+        mPaint = new Paint();
+        mPaint.setColor(processingLineColor);
+        mPaint.setAntiAlias(true);
+        mPaint.setStrokeJoin(Paint.Join.ROUND); // åœ†è§’
+        mPaint.setStrokeCap(Paint.Cap.ROUND); // åœ†è§’
+        mCanvas = new Canvas(mBitmap);
+
+        nodes = new ArrayList<Node>();
+        float nodeWidth = ((float)mWidth)/(nodesNum-1);
+        for(int i=0;i<nodesNum;i++)
+        {
+            Node node = new Node();
+            if(i==0)
+                node.mPoint = new Point(((int)nodeWidth*i),mHeight/2-nodeRadius);
+            else if(i==(nodesNum-1))
+                node.mPoint = new Point(((int)nodeWidth*i)-nodeRadius*2,mHeight/2-nodeRadius);
+            else
+                node.mPoint = new Point(((int)nodeWidth*i)-nodeRadius,mHeight/2-nodeRadius);
+            if(currNodeNO == i)
+                node.type = 1;  //å½“å‰è¿›åº¦æ‰€åˆ°è¾¾çš„èŠ‚ç‚¹
+            else
+                node.type = 0; //å·²å®Œæˆ
+            nodes.add(node);
+        }
+    }
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        DrawProgerss();
+        Log.v("ondraw", "mBitmap="+mBitmap);
+        if(mBitmap!=null)
+        {
+            canvas.drawBitmap(mBitmap, new Rect(0,0,mBitmap.getWidth(),mBitmap.getHeight()), new Rect(0,0,mBitmap.getWidth(),mBitmap.getHeight()), mPaint);
+        }
+        for(int i=0;i<nodes.size();i++)
+        {
+            Node node = nodes.get(i);
+            Log.v("ondraw", node.mPoint.x +";y="+node.mPoint.y);
+            if(i<currNodeNO)  //å·²å®Œæˆçš„è¿›åº¦èŠ‚ç‚¹
+            {
+                progressingDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
+                progressingDrawable.draw(canvas);
+            }
+            else if(i==currNodeNO)  //å½“å‰æ‰€åˆ°è¾¾çš„è¿›åº¦èŠ‚ç‚¹ï¼ˆç»ˆç‚¹ï¼‰
+            {
+                if(currNodeState == 1) //åˆ¤æ–­æ˜¯æˆåŠŸè¿˜æ˜¯å¤±è´¥  0 :å¤±è´¥  1ï¼šæˆåŠŸ
+                {
+                    progresSuccDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
+                    progresSuccDrawable.draw(canvas);
+                }
+                else
+                {
+                    progresFailDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
+                    progresFailDrawable.draw(canvas);
+                }
+            }
+            else   //æœªå®Œæˆçš„è¿›åº¦èŠ‚ç‚¹
+            {
+                unprogressingDrawable.setBounds(node.mPoint.x,  node.mPoint.y , node.mPoint.x + nodeRadius*2,node.mPoint.y + nodeRadius*2);
+                unprogressingDrawable.draw(canvas);
+            }
+        }
+    }
+    private void DrawProgerss()
+    {
+        //å…ˆç”»èƒŒæ™¯
+        Paint bgPaint = new Paint();
+        bgPaint.setColor(Color.parseColor("#f0f0f0"));
+        mCanvas.drawRect(0, 0, mWidth, mHeight, bgPaint);
+        //å…ˆç”»çº¿æ®µï¼Œçº¿æ®µçš„é«˜åº¦ä¸ºnodeRadius/2
+        mPaint.setStrokeWidth(nodeRadius/2);
+        //å‰åŠæˆªçº¿æ®µ
+//		mCanvas.drawLine(nodeRadius, mHeight/2, mWidth-nodeRadius, mHeight/2, mPaint);  //çº¿æ®µ2ç«¯å»æ‰nodeRadius
+        mCanvas.drawLine(nodeRadius, mHeight/2, nodes.get(currNodeNO).mPoint.x + nodeRadius, nodes.get(currNodeNO).mPoint.y + nodeRadius, mPaint);  //çº¿æ®µ2ç«¯å»æ‰nodeRadius
+        //ååŠæˆªçº¿æ®µ
+        mPaint.setColor(Color.parseColor("#dddddd"));
+        mCanvas.drawLine(nodes.get(currNodeNO).mPoint.x +nodeRadius, nodes.get(currNodeNO).mPoint.y + nodeRadius, mWidth-nodeRadius, mHeight/2, mPaint);  //çº¿æ®µ2ç«¯å»æ‰nodeRadius
+    }
+    class Node
+    {
+        Point mPoint;
+        int type; //0:å·²å®Œæˆ  1:å½“å‰åˆ°è¾¾çš„è¿›åº¦èŠ‚ç‚¹
+    }
 }

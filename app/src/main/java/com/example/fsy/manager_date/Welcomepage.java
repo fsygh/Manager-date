@@ -24,14 +24,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -54,6 +57,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private GoalDataManager mUserDataManager;
     private List<Map<String,Object>> listItem;
     private Context mContext;
+    private TextView msearch;
     private CircleImg avatarImg;// 头像图片
     private Button loginBtn;// 页面的登录按钮
     private SelectPicPopupWindow menuWindow; // 自定义的头像编辑弹出框
@@ -74,7 +78,8 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
-
+        msearch=(TextView)findViewById(R.id.tv_search);
+        msearch.setOnClickListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headview=navigationView.inflateHeaderView(R.layout.nav_header_main);
 
@@ -160,6 +165,10 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                 menuWindow = new SelectPicPopupWindow(mContext, itemsOnClick);
                 menuWindow.showAtLocation(findViewById(R.id.mainLayout),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                break;
+            case R.id.tv_search:
+                Intent intent1=new Intent(Welcomepage.this,Search.class);
+                startActivity(intent1);
                 break;
             default:
                 break;
