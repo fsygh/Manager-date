@@ -232,6 +232,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             Drawable drawable = new BitmapDrawable(null, photo);
             urlpath = FileUtil.saveFile(mContext, "temphead.jpg", photo);
             avatarImg.setImageDrawable(drawable);
+            //getResources().getDrawable((R.drawable.ic_back_normal)
 
             // 新线程后台上传服务端
             pd = ProgressDialog.show(mContext, null, "正在上传图片，请稍候...");
@@ -258,23 +259,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         startActivityForResult(intent, REQUESTCODE_CUTTING);
     }
 
-    /**
-     * 保存裁剪之后的图片数据
-     *
-     private void setPicToView(Intent picdata) {
-     Bundle extras = picdata.getExtras();
-     if (extras != null) {
-     // 取得SDCard图片路径做显示
-     Bitmap photo = extras.getParcelable("data");
-     Drawable drawable = new BitmapDrawable(null, photo);
-     urlpath = FileUtil.saveFile(mContext, "temphead.jpg", photo);
-     avatarImg.setImageDrawable(drawable);
 
-     // 新线程后台上传服务端
-     pd = ProgressDialog.show(mContext, null, "正在上传图片，请稍候...");
-     new Thread(uploadImageRunnable).start();
-     }
-     }
 
 
      /**
@@ -381,7 +366,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                 //start by lcfeng 2015-11-28
                 case 1:
                     pd.dismiss();
-                    Toast.makeText(mContext, "还没有设置上传服务器的路径！", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(mContext, "还没有设置上传服务器的路径！", Toast.LENGTH_SHORT).show();
                     break;
                 //end by lcfeng 2015-11-28
                 default:
