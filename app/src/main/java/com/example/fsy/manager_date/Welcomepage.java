@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -70,6 +71,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private static final int REQUESTCODE_PICK = 0;        // 相册选图标记
     private static final int REQUESTCODE_TAKE = 1;        // 相机拍照标记
     private static final int REQUESTCODE_CUTTING = 2;
+    private LinearLayout linelayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         builder.detectFileUriExposure();
         msearch=(TextView)findViewById(R.id.tv_search);
         msearch.setOnClickListener(this);
+        linelayout=(LinearLayout)findViewById(R.id.ll_search);
+        linelayout.setOnClickListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headview=navigationView.inflateHeaderView(R.layout.nav_header_main);
 
@@ -169,6 +173,10 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             case R.id.tv_search:
                 Intent intent1=new Intent(Welcomepage.this,Search.class);
                 startActivity(intent1);
+                break;
+            case R.id.ll_search:
+                Intent intent2=new Intent(Welcomepage.this,Search.class);
+                startActivity(intent2);
                 break;
             default:
                 break;
