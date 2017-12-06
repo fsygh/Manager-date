@@ -24,14 +24,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -72,6 +71,9 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private static final int REQUESTCODE_TAKE = 1;        // 相机拍照标记
     private static final int REQUESTCODE_CUTTING = 2;
     private LinearLayout linelayout;
+    private Save_drawble save_drawble;
+    private long exitTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,10 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         View headview=navigationView.inflateHeaderView(R.layout.nav_header_main);
 
         avatarImg = (CircleImg)headview. findViewById(R.id.avatarImg);
-
+        if(save_drawble.flag!=0)
+        {
+            avatarImg.setImageDrawable(save_drawble.drawable);
+        }
         avatarImg.setOnClickListener(this);
 
         if (mUserDataManager == null) {
@@ -240,6 +245,8 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             Drawable drawable = new BitmapDrawable(null, photo);
             urlpath = FileUtil.saveFile(mContext, "temphead.jpg", photo);
             avatarImg.setImageDrawable(drawable);
+            save_drawble.flag=1;
+            save_drawble.drawable=drawable;
             //getResources().getDrawable((R.drawable.ic_back_normal)
 
             // 新线程后台上传服务端
@@ -414,5 +421,26 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
+        {
+
+            if((System.currentTimeMillis()-exitTime) > 2000)  //System.currentTimeMillis()无论何时调用，肯定大于2000
+            {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序",Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            }
+            else
+            {
+                finish();
+                System.exit(0);
+            }
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
