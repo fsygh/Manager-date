@@ -37,6 +37,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.solo.library.ISlide;
+import com.solo.library.OnClickSlideItemListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +59,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
 
     private GoalDataManager mUserDataManager;
     private List<Map<String,Object>> listItem;
+    private List<String> showlist;
     private Context mContext;
     private TextView msearch;
     private CircleImg avatarImg;// 头像图片
@@ -72,6 +76,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private static final int REQUESTCODE_CUTTING = 2;
     private LinearLayout linelayout;
     private Save_drawble save_drawble;
+    LvAdapter adapter;
     private long exitTime = 0;
 
 
@@ -104,6 +109,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         String[] ids = mUserDataManager.getAllGoalsByColumn("_id");
         String[] dates = mUserDataManager.getAllGoalsByColumn("end_time");
         listItem = new ArrayList<>();
+        showlist=new ArrayList<>();
         if(names!=null)
         {
             for(int i=0;i<names.length;i++)
@@ -112,25 +118,43 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                 showitem.put("id",ids[i]);
                 showitem.put("name",names[i]);
                 showitem.put("date","Due Date:" + dates[i]);
+                showlist.add(ids[i]+"  "+names[i]+"\n"+dates[i]);
                 listItem.add(showitem);
             }
 
         }
-        SimpleAdapter adpt = new SimpleAdapter(
-                this, listItem, R.layout.goal_list_item,
-                new String[]{"id","name","date"},new int[]{R.id.goal_id, R.id.goal_name, R.id.goal_date} );
+       // SimpleAdapter adpt = new SimpleAdapter(
+             //   this, listItem, R.layout.goal_list_item,
+                //new String[]{"id","name","date"},new int[]{R.id.goal_id, R.id.goal_name, R.id.goal_date} );
         ListView goalList = (ListView) findViewById(R.id.goal_list);
-        goalList.setAdapter(adpt);
+        adapter=new LvAdapter(showlist);
+        goalList.setAdapter(adapter);
+        //adapter=new LvAdapter(listItem);
+        adapter.setupListView(goalList);
 
-        goalList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnClickSlideItemListener(new OnClickSlideItemListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(ISlide iSlideView, View v, int position) {
+                //Toast.makeText(v.getContext(), "click item position:" + position, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Welcomepage.this,
                         ShowDetail.class);
-                intent.putExtra("id",(String)(listItem.get(i).get("id")));
+               // Toast.makeText(v.getContext(), "click item position:" + position, Toast.LENGTH_SHORT).show();
+                intent.putExtra("id",(String)(listItem.get(position).get("id")));
                 startActivity(intent);
             }
+
+            @Override
+            public void onClick(ISlide iSlideView, View v, int position) {
+                if (v.getId() == R.id.btn_del) {
+                    iSlideView.close();
+                    showlist.remove(position);
+                    //Toast.makeText(v.getContext(),(String)listItem.get(position).get("name"),Toast.LENGTH_LONG).show();
+                    mUserDataManager.deleteGoalDatabyname((String)listItem.get(position).get("name"));
+                    adapter.notifyDataSetChanged();
+                }
+            }
         });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -153,7 +177,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-       // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
         mContext=Welcomepage.this;
     }

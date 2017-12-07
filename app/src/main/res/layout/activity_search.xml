@@ -57,9 +57,17 @@
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/textview1"
+        android:text="搜索历史"
+        android:gravity="bottom"
+        android:background="#f4f4f4"
+        android:layout_below="@+id/toolbar"/>
     <ListView
         android:background="#f4f4f4"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/textview1"
         android:id="@+id/all_goal_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

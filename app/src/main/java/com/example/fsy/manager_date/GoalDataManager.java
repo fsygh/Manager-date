@@ -127,7 +127,7 @@ public class GoalDataManager {
 
     //根据目标名注销
     public boolean deleteGoalDatabyname(String name) {
-        return mSQLiteDatabase.delete(TABLE_NAME, GOAL_NAME + "=" + name, null) > 0;
+        return mSQLiteDatabase.delete(TABLE_NAME, GOAL_NAME + "= ?", new String[]{name}) > 0;
     }
 
     //删除所有目标
