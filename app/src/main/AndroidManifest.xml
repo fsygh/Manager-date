@@ -25,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Welcomepage" />
         <activity android:name=".Addpoint" />
         <activity android:name=".Register" />
         <activity android:name=".ShowDetail"/>
