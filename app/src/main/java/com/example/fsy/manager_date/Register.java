@@ -57,6 +57,10 @@ public class Register extends AppCompatActivity implements OnClickListener{
             String userPwd = mPwd.getText().toString().trim();
             String userPwdCheck = mPwdCheck.getText().toString().trim();
             //检查用户是否存在
+            if(mUserDataManager.findUserByName(userName)==0)
+            {
+                Toast.makeText(this,getString(R.string.name_already_exist),Toast.LENGTH_SHORT).show();
+            }
 
             if(userPwd.equals(userPwdCheck)==false){     //两次密码输入不一样
                 Toast.makeText(this, getString(R.string.pwd_not_the_same), Toast.LENGTH_SHORT).show();

@@ -77,6 +77,7 @@ public class LoginActivity extends Activity implements OnClickListener {
                     }else if(result==0){
                         Toast.makeText(this, getString(R.string.login_fail),Toast.LENGTH_SHORT).show();  //登录失败提示
                     }
+
                 }
                 break;
 
