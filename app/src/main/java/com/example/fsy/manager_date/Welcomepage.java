@@ -27,10 +27,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +39,6 @@ import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -670,10 +667,18 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        if (id == R.id.nav_goal) {
+            goalType=0;
+            updateList();
+        } else if (id == R.id.nav_project) {
+            goalType=1;
+            updateList();
+        } else if (id == R.id.nav_task) {
+            goalType=2;
+            updateList();
+        } else if (id == R.id.nav_action) {
+            goalType=3;
+            updateList();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(Welcomepage.this, LoginActivity.class);
             startActivity(intent);
