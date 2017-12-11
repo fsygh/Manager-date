@@ -145,6 +145,11 @@ public class ShowDetail extends AppCompatActivity {
         smallGoalList.setAdapter(adpt);
         Button history = (Button)findViewById(R.id.history);
         Button subtasks = (Button)findViewById(R.id.sub_tasks);
+        if(father.getType()==3)
+        {
+            history.setVisibility(View.INVISIBLE);
+            subtasks.setVisibility(View.INVISIBLE);
+        }
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

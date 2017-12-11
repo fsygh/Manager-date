@@ -84,7 +84,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private List<GoalData> parentList = new ArrayList<>();
     private List<List<GoalData>> childList = new ArrayList<>();
 
-    private int goalType = 0;
+    private int goalType = 2;
     private int selectedGoalID = -1;
     private View selectedView = null;
     private MyExpandableListViewAdapter adapter;
@@ -307,15 +307,15 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
 
         mUserDataManager.deleteAllGoalDatas();
         mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-11-11", "2017-11-11",
-                "2017-11-11", "this is note", 1, 0, 0, 0, "User", 0));
+                "2017-11-11", "this is note", 1, 2, 0, 0, "User", 0));
         mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-11-11", "2017-11-11",
-                "2017-11-11", "this is note", 1, 0, 0, 0, "User", 0));
+                "2017-11-11", "this is note", 1, 2, 0, 0, "User", 0));
         mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-11-11", "2017-11-11",
-                "2017-11-11", "this is note", 1, 0, 0, 0, "User", 0));
+                "2017-11-11", "this is note", 1, 2, 0, 0, "User", 0));
         mUserDataManager.insertGoalData(new GoalData(-1, "action", "2017-11-11",
-                "2017-11-11", "2017-11-11", "this is note", 1, 1, 1, 0, "User", 0));
+                "2017-11-11", "2017-11-11", "this is note", 1, 3, 1, 0, "User", 0));
         mUserDataManager.insertGoalData(new GoalData(-1, "action", "2017-11-11",
-                "2017-11-11", "2017-11-11", "this is note", 1, 1, 1, 0, "User", 0));
+                "2017-11-11", "2017-11-11", "this is note", 1, 3, 1, 0, "User", 0));
 
         parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
                 "", -1, goalType, -1, -1, "", 0));
