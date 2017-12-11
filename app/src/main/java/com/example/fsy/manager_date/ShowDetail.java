@@ -1,28 +1,24 @@
 package com.example.fsy.manager_date;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ShowDetail extends AppCompatActivity {
     private GoalDataManager mUserDataManager;
@@ -128,10 +124,10 @@ public class ShowDetail extends AppCompatActivity {
         }
 
         id = Integer.parseInt(getIntent().getExtras().getString("id"));
-        GoalData father = mUserDataManager.fetchGoalDatasByID(id);
+        final GoalData father = mUserDataManager.fetchGoalDatasByID(id);
         ((TextView) findViewById(R.id.goal_name)).setText(father.getName());
         String[] importance = {"Important and Urgent", "Important but not Urgent", "Urgent but " +
-                "not Important", "not Important and not Urgent",""};
+                "not Important", "not Important and not Urgent", ""};
         ((TextView) findViewById(R.id.goal_importance)).setText(importance[father.getImportance()]);
         ((TextView) findViewById(R.id.goal_due_time)).setText(father.getEndTime());
         ((TextView) findViewById(R.id.goal_start_time)).setText(father.getStartTime());
@@ -143,10 +139,10 @@ public class ShowDetail extends AppCompatActivity {
         adpt = new MyAdapter(this, sons);
         ListView smallGoalList = (ListView) findViewById(R.id.sub_goal_list);
         smallGoalList.setAdapter(adpt);
-        Button history = (Button)findViewById(R.id.history);
-        Button subtasks = (Button)findViewById(R.id.sub_tasks);
-        if(father.getType()==3)
-        {
+        Button history = (Button) findViewById(R.id.history);
+        Button subtasks = (Button) findViewById(R.id.sub_tasks);
+        Button addSubTask = (Button) findViewById(R.id.add_sub_task);
+        if (father.getType() == 3) {
             history.setVisibility(View.INVISIBLE);
             subtasks.setVisibility(View.INVISIBLE);
         }
@@ -162,6 +158,25 @@ public class ShowDetail extends AppCompatActivity {
             public void onClick(View view) {
                 completed = 0;
                 updateList();
+            }
+        });
+        addSubTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText inputServer = new EditText(ShowDetail.this);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ShowDetail.this);
+                dialogBuilder.setTitle("添加任务").setIcon(android.R.drawable.ic_dialog_info).
+                        setView(inputServer).setNegativeButton("取消", null);
+                dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String name = inputServer.getText().toString();
+                        mUserDataManager.insertGoalData(new GoalData(-1, name,
+                                "", "", "", "",
+                                4, father.getType() + 1, father.getID(), 0, "User", 0));
+                        updateList();
+                    }
+                });
+                dialogBuilder.show();
             }
         });
 
