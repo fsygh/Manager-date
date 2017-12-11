@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,10 +29,11 @@ public class ShowDetail extends AppCompatActivity {
     private MyAdapter adpt;
     private ArrayList<GoalData> sons;
     private int id;
+    private int completed = 0;
 
     private void updateList() {
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", 0));
+                "", "", -1, -1, id, -1, "", completed));
         adpt.setSons(sons);
         adpt.notifyDataSetChanged();
     }
@@ -136,12 +138,27 @@ public class ShowDetail extends AppCompatActivity {
         ((TextView) findViewById(R.id.goal_alert_time)).setText(father.getAlertTime());
         ((TextView) findViewById(R.id.goal_description)).setText(father.getNote());
 
-        sons = mUserDataManager.fetchAllSubGoalDatas(id);
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", 0));
+                "", "", -1, -1, id, -1, "", completed));
         adpt = new MyAdapter(this, sons);
         ListView smallGoalList = (ListView) findViewById(R.id.sub_goal_list);
         smallGoalList.setAdapter(adpt);
+        Button history = (Button)findViewById(R.id.history);
+        Button subtasks = (Button)findViewById(R.id.sub_tasks);
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                completed = 1;
+                updateList();
+            }
+        });
+        subtasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                completed = 0;
+                updateList();
+            }
+        });
 
     }
 }
