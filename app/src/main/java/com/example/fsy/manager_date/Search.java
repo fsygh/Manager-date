@@ -32,13 +32,13 @@ public class Search extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_search);
         if (mUserDataManager == null) {
             mUserDataManager = new GoalDataManager(this, "test");
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            mUserDataManager.openGoalDatabase();                              //建立本地数据库
         }
         mback = (TextView) findViewById(R.id.come_back);
         mback.setOnClickListener(this);
         listItem = new ArrayList<>();
         mSearchView = (SearchView) findViewById(R.id.msearch);
-        String[] names = mUserDataManager.getAllGoalsByColumn("goal_name");
+        String[] names = mUserDataManager.getAllGoalsByColumn("name");
         String[] ids = mUserDataManager.getAllGoalsByColumn("_id");
         String[] dates = mUserDataManager.getAllGoalsByColumn("end_time");
         if (names != null) {

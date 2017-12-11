@@ -6,11 +6,12 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.example.fsy.manager_date"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -21,6 +22,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:support-v4:25.4.0'
+    implementation 'com.android.support:support-vector-drawable:25.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -39,4 +42,5 @@ dependencies {
 }
 repositories {
     mavenCentral()
+    google()
 }

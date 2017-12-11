@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Manager-date.iml" filepath="$PROJECT_DIR$/Manager-date.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/Manager-date-app.iml" filepath="$PROJECT_DIR$/app/Manager-date-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/androidproject-Manager-date.iml" filepath="$PROJECT_DIR$/androidproject-Manager-date.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

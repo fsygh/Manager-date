@@ -1,11 +1,13 @@
 package com.example.fsy.manager_date;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -16,24 +18,29 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,10 +59,10 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Welcomepage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+public class Welcomepage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private GoalDataManager mUserDataManager;
-    private List<Map<String,Object>> listItem;
+    private List<Map<String, Object>> listItem;
     private Context mContext;
     private TextView msearch;
     private CircleImg avatarImg;// 头像图片
@@ -71,55 +78,255 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private static final int REQUESTCODE_TAKE = 1;        // 相机拍照标记
     private static final int REQUESTCODE_CUTTING = 2;
 
+    private List<GoalData> parentList = new ArrayList<>();
+    private List<List<GoalData>> childList = new ArrayList<>();
+
+    private int goalType = 0;
+    private int selectedGoalID = -1;
+    private View selectedView = null;
+    private MyExpandableListViewAdapter adapter;
+
+    public Welcomepage() {
+    }
+
+    private void updateList() {
+        parentList.clear();
+        childList.clear();
+        parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
+                "", -1, goalType, -1, -1, "", 0));
+        childList.clear();
+        for (int i = 0; i < parentList.size(); i++)
+            childList.add(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
+                    "", "", -1, goalType + 1, parentList.get(i).getID(), -1, "", 0)));
+        adapter.notifyDataSetChanged();
+    }
+
+    private class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
+//        private Map<Integer, Boolean> checkboxMap = new HashMap<>();
+
+        //  获得某个父项的某个子项
+        @Override
+        public Object getChild(int parentPos, int childPos) {
+            return childList.get(parentPos).get(childPos);
+        }
+
+        //  获得父项的数量
+        @Override
+        public int getGroupCount() {
+            return parentList.size();
+        }
+
+        //  获得某个父项的子项数目
+        @Override
+        public int getChildrenCount(int parentPos) {
+            return childList.get(parentPos).size();
+        }
+
+        //  获得某个父项
+        @Override
+        public Object getGroup(int parentPos) {
+            return childList.get(parentPos);
+        }
+
+        //  获得某个父项的id
+        @Override
+        public long getGroupId(int parentPos) {
+            return parentPos;
+        }
+
+        //  获得某个父项的某个子项的id
+        @Override
+        public long getChildId(int parentPos, int childPos) {
+            return childPos;
+        }
+
+        //  按函数的名字来理解应该是是否具有稳定的id，这个方法目前一直都是返回false，没有去改动过
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        //  获得父项显示的view
+        @SuppressLint("InflateParams")
+        @Override
+        public View getGroupView(final int parentPos, boolean b, View view, ViewGroup viewGroup) {
+            class ViewHolder {
+                TextView text, text2;
+                CheckBox checkBox;
+            }
+            final ViewHolder holder;
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) Welcomepage
+                        .this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                assert inflater != null;
+                view = inflater.inflate(R.layout.parent_item, null);
+                holder = new ViewHolder();
+                holder.text = (TextView) view.findViewById(R.id.parent_title);
+                holder.text2 = (TextView) view.findViewById(R.id.parent_due_date);
+                holder.checkBox = (CheckBox) view.findViewById(R.id.selected);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+            view.setTag(R.layout.parent_item, parentPos);
+            view.setTag(R.layout.child_item, -1);
+            holder.text.setText(parentList.get(parentPos).getName());
+            holder.text2.setText(parentList.get(parentPos).getName());
+            holder.checkBox.setTag(parentList.get(parentPos).getID());
+            holder.checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    int id = (int) (view.getTag());
+                    GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
+                    goal.setCompleted(1);
+                    mUserDataManager.updateGoalData(goal);
+//                    checkboxMap.put(id, true);
+                    updateList();
+                }
+            });
+//            if (checkboxMap != null && checkboxMap.containsKey(parentList.get(parentPos).getID())) {
+//                holder.checkBox.setChecked(true);
+//            } else {
+//                holder.checkBox.setChecked(false);
+//            }
+            holder.checkBox.setChecked(false);
+            holder.text.setTag(parentList.get(parentPos).getID());
+            holder.text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    int id = (int) (view.getTag());
+                    Intent intent = new Intent(Welcomepage.this, ShowDetail.class);
+                    intent.putExtra("id", String.valueOf(id));
+                    startActivity(intent);
+                }
+            });
+            return view;
+        }
+
+        //  获得子项显示的view
+        @SuppressLint("InflateParams")
+        @Override
+        public View getChildView(int parentPos, int childPos, boolean b, View view, ViewGroup viewGroup) {
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) Welcomepage
+                        .this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                assert inflater != null;
+                view = inflater.inflate(R.layout.child_item, null);
+            }
+            view.setTag(R.layout.parent_item, parentPos);
+            view.setTag(R.layout.child_item, childPos);
+            TextView text = (TextView) view.findViewById(R.id.child_title);
+            text.setText(childList.get(parentPos).get(childPos).getName());
+            TextView text2 = (TextView) view.findViewById(R.id.child_due_date);
+            text2.setText(childList.get(parentPos).get(childPos).getEndTime());
+            CheckBox checkBox = (CheckBox) view.findViewById(R.id.selected);
+            checkBox.setTag(childList.get(parentPos).get(childPos).getID());
+            checkBox.setChecked(false);
+            text.setTag(childList.get(parentPos).get(childPos).getID());
+            text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    int id = (int) (view.getTag());
+                    Intent intent = new Intent(Welcomepage.this, ShowDetail.class);
+                    intent.putExtra("id", String.valueOf(id));
+                    startActivity(intent);
+                }
+            });
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    int id = (int) (view.getTag());
+                    GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
+                    goal.setCompleted(1);
+                    mUserDataManager.updateGoalData(goal);
+                    updateList();
+                }
+            });
+            return view;
+        }
+
+        //  子项是否可选中，如果需要设置子项的点击事件，需要返回true
+        @Override
+        public boolean isChildSelectable(int i, int i1) {
+            return true;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        View view = findViewById(R.id.layout);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+            }
+        });
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
-        msearch=(TextView)findViewById(R.id.tv_search);
+        msearch = (TextView) findViewById(R.id.tv_search);
         msearch.setOnClickListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headview=navigationView.inflateHeaderView(R.layout.nav_header_main);
-
-        avatarImg = (CircleImg)headview. findViewById(R.id.avatarImg);
-
+        View headview = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        avatarImg = (CircleImg) headview.findViewById(R.id.avatarImg);
         avatarImg.setOnClickListener(this);
 
         if (mUserDataManager == null) {
-            mUserDataManager = new GoalDataManager(this,"test");
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            mUserDataManager = new GoalDataManager(this, "test");
+            mUserDataManager.openGoalDatabase();                              //建立本地数据库
         }
-        String[] names = mUserDataManager.getAllGoalsByColumn("goal_name");
-        String[] ids = mUserDataManager.getAllGoalsByColumn("_id");
-        String[] dates = mUserDataManager.getAllGoalsByColumn("end_time");
-        listItem = new ArrayList<>();
-        if(names!=null)
-        {
-            for(int i=0;i<names.length;i++)
-            {
-                Map<String,Object> showitem = new HashMap<>();
-                showitem.put("id",ids[i]);
-                showitem.put("name",names[i]);
-                showitem.put("date","Due Date:" + dates[i]);
-                listItem.add(showitem);
-            }
 
-        }
-        SimpleAdapter adpt = new SimpleAdapter(
-                this, listItem, R.layout.goal_list_item,
-                new String[]{"id","name","date"},new int[]{R.id.goal_id, R.id.goal_name, R.id.goal_date} );
-        ListView goalList = (ListView) findViewById(R.id.goal_list);
-        goalList.setAdapter(adpt);
+        mUserDataManager.deleteAllGoalDatas();
+        mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-11-11", "2017-11-11",
+                "2017-11-11", "this is note", 1, 0, 0, 0, "User", 0));
+        mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-11-11", "2017-11-11",
+                "2017-11-11", "this is note", 1, 0, 0, 0, "User", 0));
+        mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-11-11", "2017-11-11",
+                "2017-11-11", "this is note", 1, 0, 0, 0, "User", 0));
+        mUserDataManager.insertGoalData(new GoalData(-1, "action", "2017-11-11",
+                "2017-11-11", "2017-11-11", "this is note", 1, 1, 1, 0, "User", 0));
+        mUserDataManager.insertGoalData(new GoalData(-1, "action", "2017-11-11",
+                "2017-11-11", "2017-11-11", "this is note", 1, 1, 1, 0, "User", 0));
 
-        goalList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
+                "", -1, goalType, -1, -1, "", 0));
+        childList.clear();
+        for (int i = 0; i < parentList.size(); i++)
+            childList.add(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
+                    "", "", -1, goalType + 1, parentList.get(i).getID(), -1, "", 0)));
+
+        adapter = new MyExpandableListViewAdapter();
+
+        ExpandableListView listview = (ExpandableListView) findViewById(R.id.expandablelistview);
+        listview.setAdapter(adapter);
+        listview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(Welcomepage.this,
-                        ShowDetail.class);
-                intent.putExtra("id",(String)(listItem.get(i).get("id")));
-                startActivity(intent);
+            public boolean onChildClick(ExpandableListView expandableListView, View view,
+                                        int parentPos, int childPos, long l) {
+                if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                Toast.makeText(Welcomepage.this, childList.get(parentPos).get(childPos).getName(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String content = "";
+                if ((int) view.getTag(R.layout.child_item) == -1) {
+                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    selectedView = view;
+                    view.setBackgroundColor(Color.parseColor("#4FC3F7"));
+                    selectedGoalID = parentList.get((int) view.getTag(R.layout.parent_item)).getID();
+                    content = String.valueOf(selectedGoalID);
+                }
+                Toast.makeText(Welcomepage.this, content, Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -129,6 +336,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
 
                 //   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 // .setAction("Action", null).show();
@@ -141,12 +349,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-       // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        mContext=Welcomepage.this;
+        mContext = Welcomepage.this;
     }
 
     @Override
@@ -160,6 +367,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     }
 
     public void onClick(View v) {
+        if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
         switch (v.getId()) {
             case R.id.avatarImg:// 更换头像点击事件
                 menuWindow = new SelectPicPopupWindow(mContext, itemsOnClick);
@@ -167,7 +375,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.tv_search:
-                Intent intent1=new Intent(Welcomepage.this,Search.class);
+                Intent intent1 = new Intent(Welcomepage.this, Search.class);
                 startActivity(intent1);
                 break;
             default:
@@ -238,6 +446,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             new Thread(uploadImageRunnable).start();
         }
     }
+
     /**
      * 裁剪图片方法实现
      *
@@ -260,24 +469,24 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
 
     /**
      * 保存裁剪之后的图片数据
-     *
-     private void setPicToView(Intent picdata) {
-     Bundle extras = picdata.getExtras();
-     if (extras != null) {
-     // 取得SDCard图片路径做显示
-     Bitmap photo = extras.getParcelable("data");
-     Drawable drawable = new BitmapDrawable(null, photo);
-     urlpath = FileUtil.saveFile(mContext, "temphead.jpg", photo);
-     avatarImg.setImageDrawable(drawable);
-
-     // 新线程后台上传服务端
-     pd = ProgressDialog.show(mContext, null, "正在上传图片，请稍候...");
-     new Thread(uploadImageRunnable).start();
-     }
-     }
-
-
-     /**
+     * <p>
+     * private void setPicToView(Intent picdata) {
+     * Bundle extras = picdata.getExtras();
+     * if (extras != null) {
+     * // 取得SDCard图片路径做显示
+     * Bitmap photo = extras.getParcelable("data");
+     * Drawable drawable = new BitmapDrawable(null, photo);
+     * urlpath = FileUtil.saveFile(mContext, "temphead.jpg", photo);
+     * avatarImg.setImageDrawable(drawable);
+     * <p>
+     * // 新线程后台上传服务端
+     * pd = ProgressDialog.show(mContext, null, "正在上传图片，请稍候...");
+     * new Thread(uploadImageRunnable).start();
+     * }
+     * }
+     * <p>
+     * <p>
+     * /**
      * 使用HttpUrlConnection模拟post表单进行文件
      * 上传平时很少使用，比较麻烦
      * 原理是： 分析文件上传的数据格式，然后根据格式构造相应的发送给服务器的字符串。
@@ -400,7 +609,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -413,9 +622,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             startActivity(intent);
             Toast.makeText(this, "注销成功", Toast.LENGTH_LONG).show();
 
-        }
-        else if(id==R.id.nav_exit)
-        {
+        } else if (id == R.id.nav_exit) {
             System.exit(0);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

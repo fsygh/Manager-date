@@ -26,7 +26,7 @@ public class AddDescription extends AppCompatActivity implements View.OnClickLis
         textDescription=(EditText)findViewById(R.id.editText1);
         if (mUserDataManager == null) {
             mUserDataManager = new GoalDataManager(this,"test");
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            mUserDataManager.openGoalDatabase();                              //建立本地数据库
         }
         customToolBar = (CustomToolBar) findViewById(R.id.customToolbar);
         customToolBar.setToolBarClick(new CustomToolBar.ToolBarClick() {
@@ -59,14 +59,13 @@ public class AddDescription extends AppCompatActivity implements View.OnClickLis
     public void dealData()
     {
 
-        GoalData mUser = new GoalData(ap.saveText, as.numberSmallPoint,as.allSmallPoint,description,ap.saveTime);
-        mUserDataManager.openDataBase();
-        long flag = mUserDataManager.insertGoalData(mUser); //新建用户信息
-        if (flag == -1) {
-            Toast.makeText(this, "创建失败", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this,"创建成功" , Toast.LENGTH_SHORT).show();
-        }
+//        GoalData mUser = new GoalData(ap.saveText, as.numberSmallPoint,as.allSmallPoint,description,ap.saveTime);
+//        mUserDataManager.openGoalDatabase();
+//        if (mUserDataManager.insertGoalData(mUser)) {
+//            Toast.makeText(this, "创建失败", Toast.LENGTH_SHORT).show();
+//        }else{
+//            Toast.makeText(this,"创建成功" , Toast.LENGTH_SHORT).show();
+//        }
 
 
     }
