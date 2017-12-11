@@ -2,8 +2,10 @@ package com.example.fsy.manager_date;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +42,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -171,12 +174,16 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             view.setTag(R.layout.parent_item, parentPos);
             view.setTag(R.layout.child_item, -1);
             holder.text.setText(parentList.get(parentPos).getName());
-            holder.text2.setText(parentList.get(parentPos).getName());
+            holder.text2.setText(parentList.get(parentPos).getEndTime());
             holder.checkBox.setTag(parentList.get(parentPos).getID());
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    if (selectedView != null) {
+                        selectedView.setBackgroundColor(Color.WHITE);
+                        selectedGoalID = -1;
+                        selectedView = null;
+                    }
                     int id = (int) (view.getTag());
                     GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
                     goal.setCompleted(1);
@@ -195,7 +202,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             holder.text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    if (selectedView != null) {
+                        selectedView.setBackgroundColor(Color.WHITE);
+                        selectedGoalID = -1;
+                        selectedView = null;
+                    }
                     int id = (int) (view.getTag());
                     Intent intent = new Intent(Welcomepage.this, ShowDetail.class);
                     intent.putExtra("id", String.valueOf(id));
@@ -228,7 +239,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    if (selectedView != null) {
+                        selectedView.setBackgroundColor(Color.WHITE);
+                        selectedGoalID = -1;
+                        selectedView = null;
+                    }
                     int id = (int) (view.getTag());
                     Intent intent = new Intent(Welcomepage.this, ShowDetail.class);
                     intent.putExtra("id", String.valueOf(id));
@@ -238,7 +253,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    if (selectedView != null) {
+                        selectedView.setBackgroundColor(Color.WHITE);
+                        selectedGoalID = -1;
+                        selectedView = null;
+                    }
                     int id = (int) (view.getTag());
                     GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
                     goal.setCompleted(1);
@@ -264,7 +283,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                if (selectedView != null) {
+                    selectedView.setBackgroundColor(Color.WHITE);
+                    selectedGoalID = -1;
+                    selectedView = null;
+                }
             }
         });
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -309,8 +332,12 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view,
                                         int parentPos, int childPos, long l) {
-                if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
-                Toast.makeText(Welcomepage.this, childList.get(parentPos).get(childPos).getName(), Toast.LENGTH_SHORT).show();
+                if (selectedView != null) {
+                    selectedView.setBackgroundColor(Color.WHITE);
+                    selectedGoalID = -1;
+                    selectedView = null;
+                }
+//                Toast.makeText(Welcomepage.this, childList.get(parentPos).get(childPos).getName(), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -319,13 +346,17 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String content = "";
                 if ((int) view.getTag(R.layout.child_item) == -1) {
-                    if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                    if (selectedView != null) {
+                        selectedView.setBackgroundColor(Color.WHITE);
+                        selectedGoalID = -1;
+                        selectedView = null;
+                    }
                     selectedView = view;
                     view.setBackgroundColor(Color.parseColor("#4FC3F7"));
                     selectedGoalID = parentList.get((int) view.getTag(R.layout.parent_item)).getID();
                     content = String.valueOf(selectedGoalID);
                 }
-                Toast.makeText(Welcomepage.this, content, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Welcomepage.this, content, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -336,13 +367,30 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+                final EditText inputServer = new EditText(Welcomepage.this);
+                inputServer.setLinkTextColor(Color.BLACK);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Welcomepage.this);
+                dialogBuilder.setTitle("添加任务").setIcon(android.R.drawable.ic_dialog_info).
+                        setView(inputServer).setNegativeButton("取消", null);
+                dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
-                //   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                // .setAction("Action", null).show();
-                Intent intent = new Intent(Welcomepage.this,
-                        Addpoint.class);
-                startActivity(intent);
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String name = inputServer.getText().toString();
+                        if (selectedGoalID != -1) {
+                            mUserDataManager.insertGoalData(new GoalData(-1, name,
+                                    "", "", "", "",
+                                    4, goalType + 1, selectedGoalID, 0, "User", 0));
+                        } else {
+                            mUserDataManager.insertGoalData(new GoalData(-1, name,
+                                    "", "", "", "",
+                                    4, goalType, 0, 0, "User", 0));
+                        }
+                        updateList();
+//                        Toast.makeText(Welcomepage.this, name, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialogBuilder.show();
             }
         });
 
@@ -367,7 +415,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     }
 
     public void onClick(View v) {
-        if (selectedView != null) selectedView.setBackgroundColor(Color.WHITE);
+        if (selectedView != null) {
+            selectedView.setBackgroundColor(Color.WHITE);
+            selectedGoalID = -1;
+            selectedView = null;
+        }
         switch (v.getId()) {
             case R.id.avatarImg:// 更换头像点击事件
                 menuWindow = new SelectPicPopupWindow(mContext, itemsOnClick);

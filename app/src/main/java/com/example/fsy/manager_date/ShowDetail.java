@@ -128,7 +128,8 @@ public class ShowDetail extends AppCompatActivity {
         id = Integer.parseInt(getIntent().getExtras().getString("id"));
         GoalData father = mUserDataManager.fetchGoalDatasByID(id);
         ((TextView) findViewById(R.id.goal_name)).setText(father.getName());
-        String[] importance = {"Important and Urgent", "Important but not Urgent", "Urgent but not Important", "not Important and not Urgent"};
+        String[] importance = {"Important and Urgent", "Important but not Urgent", "Urgent but " +
+                "not Important", "not Important and not Urgent",""};
         ((TextView) findViewById(R.id.goal_importance)).setText(importance[father.getImportance()]);
         ((TextView) findViewById(R.id.goal_due_time)).setText(father.getEndTime());
         ((TextView) findViewById(R.id.goal_start_time)).setText(father.getStartTime());
