@@ -40,33 +40,23 @@
         android:textSize="20sp"
         tools:ignore="HardcodedText" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/goal_start_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:orientation="horizontal">
+        android:text="This is alert time"
+        android:textSize="20sp"
+        tools:ignore="HardcodedText" />
 
-        <TextView
-            android:id="@+id/goal_start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="2017-12-10"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/goal_due_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="2017-12-31"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/goal_due_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="This is alert time"
+        android:textSize="20sp"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/goal_alert_time"

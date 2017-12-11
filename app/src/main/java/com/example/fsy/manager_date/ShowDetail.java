@@ -126,6 +126,25 @@ public class ShowDetail extends AppCompatActivity {
         id = Integer.parseInt(getIntent().getExtras().getString("id"));
         final GoalData father = mUserDataManager.fetchGoalDatasByID(id);
         ((TextView) findViewById(R.id.goal_name)).setText(father.getName());
+        ((TextView) findViewById(R.id.goal_name)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText inputServer = new EditText(ShowDetail.this);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ShowDetail.this);
+                dialogBuilder.setTitle("修改任务名").setIcon(android.R.drawable.ic_dialog_info).
+                        setView(inputServer).setNegativeButton("取消", null);
+                dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String name = inputServer.getText().toString();
+                        ((TextView) findViewById(R.id.goal_name)).setText(name);
+                        father.setName(name);
+                        mUserDataManager.updateGoalData(father);
+                    }
+                });
+                dialogBuilder.show();
+
+            }
+        });
         String[] importance = {"Important and Urgent", "Important but not Urgent", "Urgent but " +
                 "not Important", "not Important and not Urgent", ""};
         ((TextView) findViewById(R.id.goal_importance)).setText(importance[father.getImportance()]);

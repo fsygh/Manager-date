@@ -275,6 +275,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
+    protected void onResume() {
+        super.onResume();
+        updateList();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
