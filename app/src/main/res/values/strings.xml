@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Manager-date</string>
+    <string name="app_name">Go Go Goal!</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

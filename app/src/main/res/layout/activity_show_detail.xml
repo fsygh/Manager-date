@@ -26,6 +26,7 @@
                 tools:ignore="HardcodedText" />
 
             <CheckBox
+                android:id="@+id/father_completed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -192,11 +193,9 @@
 
         <ListView
             android:id="@+id/sub_goal_list"
+            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="327dp"
             android:footerDividersEnabled="true"
             android:headerDividersEnabled="true" />
     </LinearLayout>
