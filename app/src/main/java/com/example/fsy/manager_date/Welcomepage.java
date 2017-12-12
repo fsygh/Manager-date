@@ -94,7 +94,12 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         childList.clear();
         parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
                 "", -1, goalType, -1, -1, "", 0));
-        childList.clear();
+        if (goalType == 3) {
+            // 没有子任务的任务也属于行动
+            parentList.addAll(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1,
+                    "", "", "", "",
+                    "", -1, 2, -1, 0, "", 0)));
+        }
         for (int i = 0; i < parentList.size(); i++)
             childList.add(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
                     "", "", -1, goalType + 1, parentList.get(i).getID(), -1, "", 0)));
@@ -321,6 +326,12 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
 
         parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
                 "", -1, goalType, -1, -1, "", 0));
+        if (goalType == 3) {
+            // 没有子任务的任务也属于行动
+            parentList.addAll(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1,
+                    "", "", "", "",
+                    "", -1, goalType + 1, -1, 0, "", 0)));
+        }
         childList.clear();
         for (int i = 0; i < parentList.size(); i++)
             childList.add(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
@@ -668,16 +679,16 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
 
         if (id == R.id.nav_goal) {
-            goalType=0;
+            goalType = 0;
             updateList();
         } else if (id == R.id.nav_project) {
-            goalType=1;
+            goalType = 1;
             updateList();
         } else if (id == R.id.nav_task) {
-            goalType=2;
+            goalType = 2;
             updateList();
         } else if (id == R.id.nav_action) {
-            goalType=3;
+            goalType = 3;
             updateList();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(Welcomepage.this, LoginActivity.class);
