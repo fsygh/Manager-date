@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class ShowDetail extends AppCompatActivity {
     private TextView startTimeTextView, endTimeTextView, alertTimeTextView;
     private CustomDatePicker startDatePicker, endDatePicker, alertDatePicker;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+    private TextView fatherImportance;
 
     // 更新子任务列表
     private void updateList() {
@@ -241,7 +243,7 @@ public class ShowDetail extends AppCompatActivity {
 
         // 任务详情文本框相关操作
         ((TextView) findViewById(R.id.goal_description)).setText(father.getNote());
-        RelativeLayout note = (RelativeLayout) findViewById(R.id.note) ;
+        RelativeLayout note = (RelativeLayout) findViewById(R.id.note);
         note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -263,12 +265,36 @@ public class ShowDetail extends AppCompatActivity {
         });
 
 
+        // 任务优先级文本框相关操作
+        final String[] importanceStrings = {"重要且紧急", "重要不紧急",
+                "紧急不重要", "不重要不紧急", "无"};
+        final int[] importanceColors = {Color.RED, Color.GREEN,Color.BLUE,  Color.CYAN,};
+        fatherImportance = ((TextView) findViewById(R.id.goal_importance));
+        fatherImportance.setText(importanceStrings[father.getImportance()]);
+        fatherImportance.setTextColor(importanceColors[father.getImportance()]);
+        fatherImportance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ShowDetail.this);
+                dialogBuilder.setTitle("请选择").setIcon(android.R.drawable.ic_dialog_info)
+                        .setSingleChoiceItems(importanceStrings, 0,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        father.setImportance(which);
+                                        mUserDataManager.updateGoalData(father);
+                                        fatherImportance.setText(importanceStrings[father
+                                                .getImportance()]);
+                                        fatherImportance.setTextColor(importanceColors[father
+                                                .getImportance()]);
+                                        dialog.dismiss();
+                                    }
+                                }
+                        )
+                        .setNegativeButton("取消", null)
+                        .show();
+            }
+        });
 
-
-
-        String[] importance = {"Important and Urgent", "Important but not Urgent", "Urgent but " +
-                "not Important", "not Important and not Urgent", ""};
-        ((TextView) findViewById(R.id.goal_importance)).setText(importance[father.getImportance()]);
 
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
                 "", "", -1, -1, id, -1, "", completed));
