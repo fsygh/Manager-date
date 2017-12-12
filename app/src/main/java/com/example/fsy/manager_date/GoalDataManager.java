@@ -97,10 +97,9 @@ public class GoalDataManager {
         values.put(USER_NAME, goalData.getUserName());
         values.put(COMPLETED, goalData.getCompleted());
         GoalDatabaseOperator.insert(TABLE_NAME, ID, values);
-        if(goalData.getFather()!=0)
-        {
+        if (goalData.getFather() != 0) {
             GoalData father = fetchGoalDatasByID(goalData.getFather());
-            father.setSonNumber(father.getSonNumber()+1);
+            father.setSonNumber(father.getSonNumber() + 1);
             updateGoalData(father);
         }
     }
@@ -194,7 +193,7 @@ public class GoalDataManager {
 
     // 根据条件返回所有目标
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public ArrayList<GoalData> fetchAllGoalDatasBy(GoalData condition) {
+    public ArrayList<GoalData> fetchAllGoalDatasBy(GoalData condition, int order) {
         String conditionString = "";
         if (condition.getID() != -1)
             conditionString += ID + "=" + condition.getID() + " AND ";
@@ -219,9 +218,18 @@ public class GoalDataManager {
         if (condition.getCompleted() != -1)
             conditionString += COMPLETED + "=" + condition.getCompleted() + " AND ";
         conditionString += ID + " IS NOT NULL";
-
-        Cursor cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
-                null, null, null, null, null);
+        Cursor cursor;
+        cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                null, null, null, END_TIME, null);
+        if (order == 1)
+            cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                    null, null, null, START_TIME, null);
+        else if (order == 2)
+            cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                    null, null, null, IMPORTANCE, null);
+        else if (order == 3)
+            cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                    null, null, null, NAME, null);
         ArrayList<GoalData> ret = new ArrayList<>();
         while (cursor.moveToNext())
             ret.add(cursor2GoalData(cursor));
@@ -235,12 +243,11 @@ public class GoalDataManager {
     }
 
 
-
-
     // 下面的代码有待重构
     //根据目标名注销
     public boolean deleteGoalDatabyname(String name) {
-        return GoalDatabaseOperator.delete(TABLE_NAME, NAME + "= ?", new String[]{name}) > 0; }
+        return GoalDatabaseOperator.delete(TABLE_NAME, NAME + "= ?", new String[]{name}) > 0;
+    }
 
     // 返回所有目标的某一列
     public String[] getAllGoalsByColumn(String column) {

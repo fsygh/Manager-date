@@ -48,15 +48,15 @@ public class ShowDetail extends AppCompatActivity {
     // 更新子任务列表
     private void updateList() {
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", completed));
+                "", "", -1, -1, id, -1, "", completed),0);
         adpt.setSons(sons);
         adpt.notifyDataSetChanged();
         if (father.getType() != 3) {
             ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
             int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
-                    "", "", "", -1, -1, id, -1, "", 0)).size();
+                    "", "", "", -1, -1, id, -1, "", 0),0).size();
             int completeNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                    "", "", -1, -1, id, -1, "", 1)).size();
+                    "", "", -1, -1, id, -1, "", 1),0).size();
             if ((completeNumber + unCompleteNumber) == 0)
                 fatherProgress.setProgress(0);
             else
@@ -185,9 +185,9 @@ public class ShowDetail extends AppCompatActivity {
         // 设置进度条相关操作
         final ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
         int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
-                "", "", "", -1, -1, id, -1, "", 0)).size();
+                "", "", "", -1, -1, id, -1, "", 0),0).size();
         int completeNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", 1)).size();
+                "", "", -1, -1, id, -1, "", 1),0).size();
         if ((completeNumber + unCompleteNumber) == 0)
             fatherProgress.setProgress(0);
         else
@@ -322,7 +322,7 @@ public class ShowDetail extends AppCompatActivity {
 
 
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", completed));
+                "", "", -1, -1, id, -1, "", completed),0);
         adpt = new MyAdapter(this, sons);
         ListView smallGoalList = (ListView) findViewById(R.id.sub_goal_list);
         smallGoalList.setAdapter(adpt);

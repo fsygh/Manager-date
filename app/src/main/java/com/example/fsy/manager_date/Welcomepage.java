@@ -29,6 +29,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -82,6 +83,10 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private List<List<GoalData>> childList = new ArrayList<>();
 
     private int goalType = 2;
+    private int order = 0;
+    private String userName = "";
+    private int completed = 0;
+
     private int selectedGoalID = -1;
     private View selectedView = null;
     private MyExpandableListViewAdapter adapter;
@@ -93,16 +98,17 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         parentList.clear();
         childList.clear();
         parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
-                "", -1, goalType, -1, -1, "", 0));
+                "", -1, goalType, -1, -1, userName, completed), order);
         if (goalType == 3) {
             // 没有子任务的任务也属于行动
             parentList.addAll(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1,
                     "", "", "", "",
-                    "", -1, 2, -1, 0, "", 0)));
+                    "", -1, 2, -1, 0, userName, completed), order));
         }
         for (int i = 0; i < parentList.size(); i++)
             childList.add(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                    "", "", -1, goalType + 1, parentList.get(i).getID(), -1, "", 0)));
+                            "", "", -1, goalType + 1, parentList.get(i).getID(), -1, userName, completed),
+                    order));
         adapter.notifyDataSetChanged();
     }
 
@@ -188,9 +194,8 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                     }
                     int id = (int) (view.getTag());
                     GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
-                    goal.setCompleted(1);
+                    goal.setCompleted(1 - goal.getCompleted());
                     mUserDataManager.updateGoalData(goal);
-//                    checkboxMap.put(id, true);
                     updateList();
                 }
             });
@@ -199,7 +204,8 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
 //            } else {
 //                holder.checkBox.setChecked(false);
 //            }
-            holder.checkBox.setChecked(false);
+            if (parentList.get(parentPos).getCompleted() == 0) holder.checkBox.setChecked(false);
+            else holder.checkBox.setChecked(true);
             holder.text.setTag(parentList.get(parentPos).getID());
             holder.text.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -237,6 +243,9 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.selected);
             checkBox.setTag(childList.get(parentPos).get(childPos).getID());
             checkBox.setChecked(false);
+            if (childList.get(parentPos).get(childPos).getCompleted() == 0)
+                checkBox.setChecked(false);
+            else checkBox.setChecked(true);
             text.setTag(childList.get(parentPos).get(childPos).getID());
             text.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -262,7 +271,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                     }
                     int id = (int) (view.getTag());
                     GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
-                    goal.setCompleted(1);
+                    goal.setCompleted(1 - goal.getCompleted());
                     mUserDataManager.updateGoalData(goal);
                     updateList();
                 }
@@ -325,17 +334,18 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                 "2017-12-12 04:55", "2017-11-11 11:11", "this is note", 1, 3, 1, 0, "User", 0));
 
         parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
-                "", -1, goalType, -1, -1, "", 0));
+                "", -1, goalType, -1, -1, "", completed), order);
         if (goalType == 3) {
             // 没有子任务的任务也属于行动
             parentList.addAll(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1,
                     "", "", "", "",
-                    "", -1, goalType + 1, -1, 0, "", 0)));
+                    "", -1, goalType + 1, -1, 0, userName, completed), order));
         }
         childList.clear();
         for (int i = 0; i < parentList.size(); i++)
             childList.add(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                    "", "", -1, goalType + 1, parentList.get(i).getID(), -1, "", 0)));
+                            "", "", -1, goalType + 1, parentList.get(i).getID(), -1, userName, completed),
+                    order));
 
         adapter = new MyExpandableListViewAdapter();
 
@@ -355,7 +365,6 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             }
         });
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String content = "";
                 if ((int) view.getTag(R.layout.child_item) == -1) {
@@ -672,6 +681,35 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         getMenuInflater().inflate(R.menu.main_activity, menu);
         return true;
     }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort_end_time:
+                order = 0;
+                updateList();
+                break;
+            case R.id.action_sort_start_time:
+                order = 1;
+                updateList();
+                break;
+            case R.id.action_sort_importance:
+                order = 2;
+                updateList();
+                break;
+            case R.id.action_sort_name:
+                order = 3;
+                updateList();
+                break;
+            case R.id.action_show_completed:
+                if (completed == 0) completed = -1;
+                else completed = 0;
+                updateList();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
