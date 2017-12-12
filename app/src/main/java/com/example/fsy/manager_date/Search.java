@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
@@ -26,7 +27,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener{
     private GoalDataManager mUserDataManager;
     private ListView goalList;
     private TextView mback;
-
+    private SimpleAdapter adpt;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -50,7 +51,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener{
                 listItem.add(showitem);
             }
         }
-        final SimpleAdapter adpt = new SimpleAdapter(
+         adpt = new SimpleAdapter(
                 this, listItem, R.layout.goal_list_item,
                 new String[]{"id", "name", "date"}, new int[]{R.id.goal_id, R.id.goal_name, R.id.goal_date});
         goalList = (ListView) findViewById(R.id.all_goal_list);
@@ -74,7 +75,10 @@ public class Search extends AppCompatActivity implements View.OnClickListener{
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!TextUtils.isEmpty(newText)) {
-                    return false;
+                    //goalList.setFilterText(newText);
+                    goalList.setTextFilterEnabled(false);
+                    Filter filter = adpt.getFilter();
+                    filter.filter(newText);
                 }
                 return false;
             }
@@ -93,4 +97,6 @@ public class Search extends AppCompatActivity implements View.OnClickListener{
 
         }
     }
+
+
 }

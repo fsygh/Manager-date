@@ -139,7 +139,8 @@ public class UserDataManager {             // 用户数据管理类
         Log.i(TAG,"findUserByName , userName="+userName);
         int result=0;
         Cursor mCursor=null;
-        mCursor=mSQLiteDatabase.query(TABLE_NAME, null, USER_NAME+"="+userName, null, null, null, null);
+        //mCursor=mSQLiteDatabase.query(TABLE_NAME, null, USER_NAME+"="+userName, null, null, null, null);
+        mCursor=mSQLiteDatabase.rawQuery("select * from users where USER_NAME like ? ",new String[]{userName});
         if(mCursor!=null){
             result=mCursor.getCount();
             mCursor.close();

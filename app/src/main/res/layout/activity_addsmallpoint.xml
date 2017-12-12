@@ -31,24 +31,26 @@
 
         <EditText
             android:id="@+id/text1"
-            android:layout_width="280dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/addone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_name" />
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_action_add" />
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="20px" />
     <ListView android:id="@+id/list"
+        android:layout_marginStart="2dp"
         android:layout_width="match_parent"
         android:layout_height="300dp" />
 
     <Button android:id="@+id/get_value"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/white"

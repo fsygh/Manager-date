@@ -48,10 +48,7 @@
             android:id="@+id/input_layout"
             layout="@layout/input_layout"
             android:layout_width="match_parent"
-            android:layout_height="160dip"
-            android:layout_below="@+id/layout_progress"
-            android:layout_toEndOf="@+id/layout_progress"
-            android:layout_toRightOf="@+id/layout_progress" />
+            android:layout_height="160dip" />
 
 
         <TextView

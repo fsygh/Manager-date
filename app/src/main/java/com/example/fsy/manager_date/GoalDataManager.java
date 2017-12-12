@@ -238,6 +238,10 @@ public class GoalDataManager {
 
 
     // 下面的代码有待重构
+    //根据目标名注销
+    public boolean deleteGoalDatabyname(String name) {
+        return GoalDatabaseOperator.delete(TABLE_NAME, NAME + "= ?", new String[]{name}) > 0; }
+
     // 返回所有目标的某一列
     public String[] getAllGoalsByColumn(String column) {
         if (GoalDatabaseOperator == null) return null;

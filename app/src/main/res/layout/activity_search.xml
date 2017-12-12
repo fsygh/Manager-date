@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"
-        android:background="@android:color/white"
+        android:background="#f4f4f4"
         android:fitsSystemWindows="true">
 
         <RelativeLayout
@@ -20,7 +20,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_search"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="30dp"
                 android:background="@drawable/shape_corner"
                 android:layout_marginRight="10dp"
@@ -37,7 +37,7 @@
                     android:layout_marginRight="14dp"
                     android:gravity="center_vertical"
                     android:iconifiedByDefault="false"
-                    android:queryHint="请输入目标名"
+                    android:queryHint="搜索"
                     android:textColor="#8A8A8A" />
 
 
@@ -50,8 +50,6 @@
                     android:id="@+id/come_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/msearch"
-                    android:layout_toRightOf="@+id/msearch"
                     android:layout_marginTop="10dp"
                     android:text="取消"
                     android:textSize="20dp" />
@@ -59,9 +57,17 @@
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/textview1"
+        android:text="搜索历史"
+        android:gravity="bottom"
+        android:background="#f4f4f4"
+        android:layout_below="@+id/toolbar"/>
     <ListView
         android:background="#f4f4f4"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/textview1"
         android:id="@+id/all_goal_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

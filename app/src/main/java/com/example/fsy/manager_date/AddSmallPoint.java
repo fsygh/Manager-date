@@ -103,6 +103,8 @@ public class AddSmallPoint extends Activity implements View.OnClickListener {
 
 		}
 	}
+
+
 }
 
 
