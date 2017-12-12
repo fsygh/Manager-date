@@ -115,6 +115,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
 //        private Map<Integer, Boolean> checkboxMap = new HashMap<>();
 
+        private int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.BLACK};
         //  获得某个父项的某个子项
         @Override
         public Object getChild(int parentPos, int childPos) {
@@ -184,6 +185,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             holder.text.setText(parentList.get(parentPos).getName());
             holder.text2.setText(parentList.get(parentPos).getEndTime());
             holder.checkBox.setTag(parentList.get(parentPos).getID());
+            holder.checkBox.setBackgroundColor(importanceColors[parentList.get(parentPos).getImportance()]);
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -243,6 +245,8 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.selected);
             checkBox.setTag(childList.get(parentPos).get(childPos).getID());
             checkBox.setChecked(false);
+            checkBox.setBackgroundColor(importanceColors[childList.get(parentPos).get(childPos)
+                    .getImportance()]);
             if (childList.get(parentPos).get(childPos).getCompleted() == 0)
                 checkBox.setChecked(false);
             else checkBox.setChecked(true);
