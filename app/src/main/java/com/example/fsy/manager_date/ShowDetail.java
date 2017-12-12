@@ -237,9 +237,9 @@ public class ShowDetail extends AppCompatActivity {
         });
 
 
+
         String[] importance = {"Important and Urgent", "Important but not Urgent", "Urgent but " +
                 "not Important", "not Important and not Urgent", ""};
-
         ((TextView) findViewById(R.id.goal_importance)).setText(importance[father.getImportance()]);
         ((TextView) findViewById(R.id.goal_description)).setText(father.getNote());
 
