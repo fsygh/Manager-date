@@ -39,7 +39,7 @@ public class ShowDetail extends AppCompatActivity {
     private GoalData father;
     private int completed = 0;
     private TextView startTimeTextView, endTimeTextView, alertTimeTextView;
-    private CustomDatePicker startDatePicker,endDatePicker,alertDatePicker;
+    private CustomDatePicker startDatePicker, endDatePicker, alertDatePicker;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 
     // 更新子任务列表
@@ -170,9 +170,9 @@ public class ShowDetail extends AppCompatActivity {
 
         // 任务时间文本框相关操作
         startTimeTextView = ((TextView) findViewById(R.id.goal_start_time));
-        startTimeTextView.setText (father.getStartTime());
+        startTimeTextView.setText(father.getStartTime());
         endTimeTextView = ((TextView) findViewById(R.id.goal_end_time));
-        endTimeTextView.setText(father .getEndTime());
+        endTimeTextView.setText(father.getEndTime());
         alertTimeTextView = ((TextView) findViewById(R.id.goal_alert_time));
         alertTimeTextView.setText(father.getAlertTime());
 
@@ -214,7 +214,7 @@ public class ShowDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String now = sdf.format(new Date());
-                if(Objects.equals(startTimeTextView.getText().toString(), ""))
+                if (Objects.equals(startTimeTextView.getText().toString(), ""))
                     startDatePicker.show(now);
                 else startDatePicker.show(startTimeTextView.getText().toString());
             }
@@ -239,11 +239,36 @@ public class ShowDetail extends AppCompatActivity {
         });
 
 
+        // 任务详情文本框相关操作
+        ((TextView) findViewById(R.id.goal_description)).setText(father.getNote());
+        RelativeLayout note = (RelativeLayout) findViewById(R.id.note) ;
+        note.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText inputServer = new EditText(ShowDetail.this);
+                inputServer.setHeight(500);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ShowDetail.this);
+                dialogBuilder.setTitle("编辑任务详情").setIcon(android.R.drawable.ic_dialog_info).
+                        setView(inputServer).setNegativeButton("取消", null);
+                dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String note = inputServer.getText().toString();
+                        father.setNote(note);
+                        mUserDataManager.updateGoalData(father);
+                        ((TextView) findViewById(R.id.goal_description)).setText(note);
+                    }
+                });
+                dialogBuilder.show();
+            }
+        });
+
+
+
+
 
         String[] importance = {"Important and Urgent", "Important but not Urgent", "Urgent but " +
                 "not Important", "not Important and not Urgent", ""};
         ((TextView) findViewById(R.id.goal_importance)).setText(importance[father.getImportance()]);
-        ((TextView) findViewById(R.id.goal_description)).setText(father.getNote());
 
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
                 "", "", -1, -1, id, -1, "", completed));
