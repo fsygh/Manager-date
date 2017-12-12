@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,7 +102,7 @@ public class ShowDetail extends AppCompatActivity {
                 holder = (ViewHolder) view.getTag();
             }
             holder.text.setText(sons.get(pos).getName());
-            holder.text2.setText(sons.get(pos).getName());
+            holder.text2.setText(sons.get(pos).getEndTime());
             holder.checkBox.setChecked(false);
             holder.text.setTag(sons.get(pos).getID());
             holder.text.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +134,7 @@ public class ShowDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_detail);
+        findViewById(R.id.sub_goal_list).setFocusable(false);
 
         if (mUserDataManager == null) {
             mUserDataManager = new GoalDataManager(this, "test");
