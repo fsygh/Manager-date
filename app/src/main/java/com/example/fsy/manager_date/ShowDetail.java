@@ -183,7 +183,7 @@ public class ShowDetail extends AppCompatActivity {
 
 
         // 设置进度条相关操作
-        ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        final ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
         int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
                 "", "", "", -1, -1, id, -1, "", 0)).size();
         int completeNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
@@ -361,6 +361,7 @@ public class ShowDetail extends AppCompatActivity {
                         mUserDataManager.insertGoalData(new GoalData(-1, name,
                                 "", "", "", "",
                                 4, father.getType() + 1, father.getID(), 0, "User", 0));
+                        father.setSonNumber(father.getSonNumber()+1);
                         updateList();
                     }
                 });
