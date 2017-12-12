@@ -97,6 +97,12 @@ public class GoalDataManager {
         values.put(USER_NAME, goalData.getUserName());
         values.put(COMPLETED, goalData.getCompleted());
         GoalDatabaseOperator.insert(TABLE_NAME, ID, values);
+        if(goalData.getFather()!=0)
+        {
+            GoalData father = fetchGoalDatasByID(goalData.getFather());
+            father.setSonNumber(father.getSonNumber()+1);
+            updateGoalData(father);
+        }
     }
 
     // 更新目标信息
