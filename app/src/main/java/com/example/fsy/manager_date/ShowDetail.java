@@ -48,15 +48,15 @@ public class ShowDetail extends AppCompatActivity {
     // 更新子任务列表
     private void updateList() {
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", completed),0);
+                "", "", -1, -1, id, -1, "", completed), 0);
         adpt.setSons(sons);
         adpt.notifyDataSetChanged();
         if (father.getType() != 3) {
             ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
             int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
-                    "", "", "", -1, -1, id, -1, "", 0),0).size();
+                    "", "", "", -1, -1, id, -1, "", 0), 0).size();
             int completeNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                    "", "", -1, -1, id, -1, "", 1),0).size();
+                    "", "", -1, -1, id, -1, "", 1), 0).size();
             if ((completeNumber + unCompleteNumber) == 0)
                 fatherProgress.setProgress(0);
             else
@@ -185,9 +185,9 @@ public class ShowDetail extends AppCompatActivity {
         // 设置进度条相关操作
         final ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
         int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
-                "", "", "", -1, -1, id, -1, "", 0),0).size();
+                "", "", "", -1, -1, id, -1, "", 0), 0).size();
         int completeNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", 1),0).size();
+                "", "", -1, -1, id, -1, "", 1), 0).size();
         if ((completeNumber + unCompleteNumber) == 0)
             fatherProgress.setProgress(0);
         else
@@ -293,7 +293,7 @@ public class ShowDetail extends AppCompatActivity {
         // 任务优先级文本框相关操作
         final String[] importanceStrings = {"重要且紧急", "重要不紧急",
                 "紧急不重要", "不重要不紧急", "无"};
-        final int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN,};
+        final int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.BLACK};
         fatherImportance = ((TextView) findViewById(R.id.goal_importance));
         fatherImportance.setText(importanceStrings[father.getImportance()]);
         fatherImportance.setTextColor(importanceColors[father.getImportance()]);
@@ -322,7 +322,7 @@ public class ShowDetail extends AppCompatActivity {
 
 
         sons = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
-                "", "", -1, -1, id, -1, "", completed),0);
+                "", "", -1, -1, id, -1, "", completed), 0);
         adpt = new MyAdapter(this, sons);
         ListView smallGoalList = (ListView) findViewById(R.id.sub_goal_list);
         smallGoalList.setAdapter(adpt);
@@ -361,7 +361,7 @@ public class ShowDetail extends AppCompatActivity {
                         mUserDataManager.insertGoalData(new GoalData(-1, name,
                                 "", "", "", "",
                                 4, father.getType() + 1, father.getID(), 0, "User", 0));
-                        father.setSonNumber(father.getSonNumber()+1);
+                        father.setSonNumber(father.getSonNumber() + 1);
                         updateList();
                     }
                 });
