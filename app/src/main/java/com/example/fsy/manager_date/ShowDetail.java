@@ -1,12 +1,21 @@
 package com.example.fsy.manager_date;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,9 +38,11 @@ import com.example.fsy.manager_date.widget.CustomDatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class ShowDetail extends AppCompatActivity {
     private GoalDataManager mUserDataManager;
@@ -118,6 +129,8 @@ public class ShowDetail extends AppCompatActivity {
             holder.text.setText(sons.get(pos).getName());
             holder.text2.setText(sons.get(pos).getEndTime());
             holder.checkBox.setChecked(false);
+            if (completed == 0) holder.checkBox.setChecked(false);
+            else holder.checkBox.setChecked(false);
             holder.text.setTag(sons.get(pos).getID());
             holder.text.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,7 +147,7 @@ public class ShowDetail extends AppCompatActivity {
                 public void onClick(View view) {
                     int id = (int) (view.getTag());
                     GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
-                    goal.setCompleted(1);
+                    goal.setCompleted(1 - goal.getCompleted());
                     mUserDataManager.updateGoalData(goal);
                     updateList();
                 }
@@ -228,11 +241,61 @@ public class ShowDetail extends AppCompatActivity {
         endDatePicker.setIsLoop(true);
         alertDatePicker = new CustomDatePicker(this, new CustomDatePicker.ResultHandler
                 () {
+            @SuppressLint("MissingPermission")
             @Override
             public void handle(String time) {
                 alertTimeTextView.setText(time);
                 father.setAlertTime(time);
                 mUserDataManager.updateGoalData(father);
+                String calanderURL = "content://com.android.calendar/calendars";
+                String calanderEventURL = "content://com.android.calendar/events";
+                String calanderRemiderURL = "content://com.android.calendar/reminders";
+                if (Integer.parseInt(Build.VERSION.SDK) >= 8) {
+                    calanderURL = "content://com.android.calendar/calendars";
+                    calanderEventURL = "content://com.android.calendar/events";
+                    calanderRemiderURL = "content://com.android.calendar/reminders";
+                } else {
+                    calanderURL = "content://calendar/calendars";
+                    calanderEventURL = "content://calendar/events";
+                    calanderRemiderURL = "content://calendar/reminders";
+                }
+
+                //获取要出入的gmail账户的id
+                String calId = "";
+                Cursor userCursor = getContentResolver().query(Uri.parse(calanderURL), null,
+                        null, null, null);
+                if (userCursor.getCount() > 0) {
+                    userCursor.moveToFirst();
+                    calId = userCursor.getString(userCursor.getColumnIndex("_id"));
+
+                }
+                ContentValues event = new ContentValues();
+                event.put("title", "交流");
+                event.put("description", "Frankie受空姐邀请,今天晚上10点以后将在Sheraton动作交流.lol~");
+                //插入hoohbood@gmail.com这个账户
+                event.put("calendar_id", calId);
+
+                Calendar mCalendar = Calendar.getInstance();
+                mCalendar.set(Calendar.HOUR_OF_DAY, 10);
+                long start = mCalendar.getTime().getTime();
+                mCalendar.set(Calendar.HOUR_OF_DAY, 11);
+                long end = mCalendar.getTime().getTime();
+
+                event.put("dtstart", start);
+                event.put("dtend", end);
+                event.put("hasAlarm", 1);
+                event.put("eventTimezone", TimeZone.getDefault().getID().toString());
+
+                Uri newEvent = getContentResolver().insert(Uri.parse(calanderEventURL), event);
+                long id = Long.parseLong(newEvent.getLastPathSegment());
+                ContentValues values = new ContentValues();
+                values.put("event_id", id);
+                values.put(CalendarContract.Reminders.MINUTES, 1 * 60 * 24);
+                values.put(CalendarContract.Reminders.EVENT_ID, id);
+                values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+                ContentResolver cr1 = getContentResolver(); // 为刚才新添加的event添加reminder
+                cr1.insert(CalendarContract.Reminders.CONTENT_URI, values); // 调用这个方法返回值是一个Uri
+
             }
         }, "2010-01-01 00:00", now);
         alertDatePicker.showSpecificTime(true);

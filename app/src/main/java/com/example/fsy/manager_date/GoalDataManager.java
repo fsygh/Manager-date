@@ -236,6 +236,53 @@ public class GoalDataManager {
         return ret;
     }
 
+    // 根据条件(时间范围)返回所有目标
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public ArrayList<GoalData> fetchAllGoalDatasWithTimeBy(GoalData condition, int order, String
+            startTime, String endTime) {
+        String conditionString = "";
+        if (condition.getID() != -1)
+            conditionString += ID + "=" + condition.getID() + " AND ";
+        if (!Objects.equals(condition.getStartTime(), ""))
+            conditionString += START_TIME + "=" + condition.getStartTime() + " AND ";
+        if (!Objects.equals(condition.getEndTime(), ""))
+            conditionString += END_TIME + "=" + condition.getEndTime() + " AND ";
+        if (!Objects.equals(condition.getAlertTime(), ""))
+            conditionString += ALERT_TIME + "=" + condition.getAlertTime() + " AND ";
+        if (!Objects.equals(condition.getNote(), ""))
+            conditionString += NOTE + "=" + condition.getNote() + " AND ";
+        if (condition.getImportance() != -1)
+            conditionString += IMPORTANCE + "=" + condition.getImportance() + " AND ";
+        if (condition.getType() != -1)
+            conditionString += TYPE + "=" + condition.getType() + " AND ";
+        if (condition.getFather() != -1)
+            conditionString += FATHER + "=" + condition.getFather() + " AND ";
+        if (condition.getSonNumber() != -1)
+            conditionString += SON_NUMBER + "=" + condition.getSonNumber() + " AND ";
+        if (!Objects.equals(condition.getUserName(), ""))
+            conditionString += USER_NAME + "=" + condition.getUserName() + " AND ";
+        if (condition.getCompleted() != -1)
+            conditionString += COMPLETED + "=" + condition.getCompleted() + " AND ";
+        conditionString += ID + " IS NOT NULL";
+        conditionString += " AND " + END_TIME + " between " + "'" + startTime + "' AND '" + endTime + "'";
+        Cursor cursor;
+        cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                null, null, null, END_TIME, null);
+        if (order == 1)
+            cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                    null, null, null, START_TIME, null);
+        else if (order == 2)
+            cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                    null, null, null, IMPORTANCE, null);
+        else if (order == 3)
+            cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
+                    null, null, null, NAME, null);
+        ArrayList<GoalData> ret = new ArrayList<>();
+        while (cursor.moveToNext())
+            ret.add(cursor2GoalData(cursor));
+        return ret;
+    }
+
 
     //删除所有目标
     public boolean deleteAllGoalDatas() {

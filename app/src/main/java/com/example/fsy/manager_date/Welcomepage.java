@@ -54,7 +54,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,10 +116,49 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         adapter.notifyDataSetChanged();
     }
 
+    private static String getOldDate(int distanceDay) {
+        SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = new Date();
+        Calendar date = Calendar.getInstance();
+        date.setTime(beginDate);
+        date.set(Calendar.DATE, date.get(Calendar.DATE) + distanceDay);
+        Date endDate = null;
+        try {
+            endDate = dft.parse(dft.format(date.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dft.format(endDate);
+    }
+
+    private void updateList2(int day) {
+        parentList.clear();
+        childList.clear();
+        String startTime, endTime;
+        startTime = getOldDate(0)+ " 00:00:00";
+        endTime = getOldDate(day) + " 23:59:00" +
+                "";
+        parentList = mUserDataManager.fetchAllGoalDatasWithTimeBy(new GoalData(-1, "", "", "", "",
+                        "", -1, goalType, -1, -1, userName, completed), order, startTime,
+                endTime);
+        if (goalType == 3) {
+            // 没有子任务的任务也属于行动
+            parentList.addAll(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1,
+                    "", "", "", "",
+                    "", -1, 2, -1, 0, userName, completed), order));
+        }
+        for (int i = 0; i < parentList.size(); i++)
+            childList.add(mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
+                            "", "", -1, goalType + 1, parentList.get(i).getID(), -1, userName, completed),
+                    order));
+        adapter.notifyDataSetChanged();
+    }
+
     private class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
 //        private Map<Integer, Boolean> checkboxMap = new HashMap<>();
 
         private int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.BLACK};
+
         //  获得某个父项的某个子项
         @Override
         public Object getChild(int parentPos, int childPos) {
@@ -720,7 +763,13 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_goal) {
+        if (id == R.id.nav_today) {
+            goalType = 2;
+            updateList2(0);
+        } else if (id == R.id.nav_week) {
+            goalType = 2;
+            updateList2(7);
+        } else if (id == R.id.nav_goal) {
             goalType = 0;
             updateList();
         } else if (id == R.id.nav_project) {

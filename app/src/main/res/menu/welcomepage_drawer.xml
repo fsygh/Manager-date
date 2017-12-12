@@ -3,6 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_today"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="今日任务"
+            tools:ignore="HardcodedText" />
+        <item
+            android:id="@+id/nav_week"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="本周任务"
+            tools:ignore="HardcodedText" />
+        <item
             android:id="@+id/nav_action"
             android:icon="@drawable/ic_menu_gallery"
             android:title="行动列表"
