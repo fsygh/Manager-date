@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -50,6 +51,17 @@ public class ShowDetail extends AppCompatActivity {
                 "", "", -1, -1, id, -1, "", completed));
         adpt.setSons(sons);
         adpt.notifyDataSetChanged();
+        if (father.getType() != 3) {
+            ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
+            int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
+                    "", "", "", -1, -1, id, -1, "", 0)).size();
+            int completeNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
+                    "", "", -1, -1, id, -1, "", 1)).size();
+            if ((completeNumber + unCompleteNumber) == 0)
+                fatherProgress.setProgress(0);
+            else
+                fatherProgress.setProgress(100 * completeNumber / (completeNumber + unCompleteNumber));
+        }
     }
 
 
@@ -170,6 +182,19 @@ public class ShowDetail extends AppCompatActivity {
         });
 
 
+        // 设置进度条相关操作
+        ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
+                "", "", "", -1, -1, id, -1, "", 0)).size();
+        int completeNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "",
+                "", "", -1, -1, id, -1, "", 1)).size();
+        if ((completeNumber + unCompleteNumber) == 0)
+            fatherProgress.setProgress(0);
+        else
+            fatherProgress.setProgress(100 * completeNumber / (completeNumber + unCompleteNumber));
+        if (father.getType() == 3) fatherProgress.setVisibility(View.INVISIBLE);
+
+
         // 任务时间文本框相关操作
         startTimeTextView = ((TextView) findViewById(R.id.goal_start_time));
         startTimeTextView.setText(father.getStartTime());
@@ -268,7 +293,7 @@ public class ShowDetail extends AppCompatActivity {
         // 任务优先级文本框相关操作
         final String[] importanceStrings = {"重要且紧急", "重要不紧急",
                 "紧急不重要", "不重要不紧急", "无"};
-        final int[] importanceColors = {Color.RED, Color.GREEN,Color.BLUE,  Color.CYAN,};
+        final int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN,};
         fatherImportance = ((TextView) findViewById(R.id.goal_importance));
         fatherImportance.setText(importanceStrings[father.getImportance()]);
         fatherImportance.setTextColor(importanceColors[father.getImportance()]);
