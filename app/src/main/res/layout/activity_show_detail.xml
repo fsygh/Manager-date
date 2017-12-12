@@ -151,14 +151,40 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/goal_description"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/note"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="This is a little note"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/color2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:background="@null"
+                android:gravity="center"
+                android:text="任务详情"
+                android:textColor="@color/color4"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/goal_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:text="This is a little note"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
