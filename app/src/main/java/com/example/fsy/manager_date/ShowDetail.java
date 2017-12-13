@@ -245,7 +245,7 @@ public class ShowDetail extends AppCompatActivity {
             public void handle(String time) {
                 alertTimeTextView.setText(time);
                 father.setAlertTime(time);
-                setAlarm(time + ":00",father.getName(),father.getNote());
+                setAlarm(time + ":00", father.getName(), father.getNote());
                 mUserDataManager.updateGoalData(father);
             }
         }, "2010-01-01 00:00", now);
@@ -309,7 +309,11 @@ public class ShowDetail extends AppCompatActivity {
         // 任务优先级文本框相关操作
         final String[] importanceStrings = {"重要且紧急", "重要不紧急",
                 "紧急不重要", "不重要不紧急", "无"};
-        final int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.WHITE};
+        final int[] importanceColors = {Color.parseColor("#FF4500"),
+                Color.parseColor("#FFD700"),
+                Color.parseColor("#228B22"),
+                Color.parseColor("#6495ED"),
+                Color.parseColor("#F5F5F5")};
         fatherImportance = ((TextView) findViewById(R.id.goal_importance));
         fatherImportance.setText(importanceStrings[father.getImportance()]);
         fatherImportance.setTextColor(importanceColors[father.getImportance()]);
@@ -387,7 +391,7 @@ public class ShowDetail extends AppCompatActivity {
 
     }
 
-    public void setAlarm(String alarmTime,String title, String note) {
+    public void setAlarm(String alarmTime, String title, String note) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date;
         long value = 0;
