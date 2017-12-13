@@ -289,6 +289,12 @@ public class GoalDataManager {
         return GoalDatabaseOperator.delete(TABLE_NAME, null, null) > 0;
     }
 
+    // 根据ID删除目标
+    public boolean deleteGoalDatabyId(int id) {
+        return GoalDatabaseOperator.delete(TABLE_NAME, ID + "= ?", new String[]{String.valueOf
+                (id)}) >0;
+    }
+
 
     // 下面的代码有待重构
     //根据目标名注销

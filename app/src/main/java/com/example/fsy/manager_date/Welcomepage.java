@@ -135,7 +135,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
         parentList.clear();
         childList.clear();
         String startTime, endTime;
-        startTime = getOldDate(0)+ " 00:00:00";
+        startTime = getOldDate(0) + " 00:00:00";
         endTime = getOldDate(day) + " 23:59:00" +
                 "";
         parentList = mUserDataManager.fetchAllGoalDatasWithTimeBy(new GoalData(-1, "", "", "", "",
@@ -157,7 +157,8 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
 //        private Map<Integer, Boolean> checkboxMap = new HashMap<>();
 
-        private int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.BLACK};
+        private int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color
+                .WHITE};
 
         //  获得某个父项的某个子项
         @Override

@@ -8,25 +8,22 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fsy.manager_date.widget.CustomDatePicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,11 +36,17 @@ public class ShowDetail extends AppCompatActivity {
     private ArrayList<GoalData> sons;
     private int id;
     private GoalData father;
+    private ImageView deleteGoal;
     private int completed = 0;
     private TextView startTimeTextView, endTimeTextView, alertTimeTextView;
     private CustomDatePicker startDatePicker, endDatePicker, alertDatePicker;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
     private TextView fatherImportance;
+    private static Context sContext = null;
+
+    public static Context getContext() {
+        return sContext;
+    }
 
     // 更新子任务列表
     private void updateList() {
@@ -51,6 +54,7 @@ public class ShowDetail extends AppCompatActivity {
                 "", "", -1, -1, id, -1, "", completed), 0);
         adpt.setSons(sons);
         adpt.notifyDataSetChanged();
+
         if (father.getType() != 3) {
             ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
             int unCompleteNumber = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "",
@@ -117,8 +121,7 @@ public class ShowDetail extends AppCompatActivity {
             }
             holder.text.setText(sons.get(pos).getName());
             holder.text2.setText(sons.get(pos).getEndTime());
-            holder.checkBox.setChecked(false);
-            if(completed==0) holder.checkBox.setChecked(false);
+            if (completed == 0) holder.checkBox.setChecked(false);
             else holder.checkBox.setChecked(false);
             holder.text.setTag(sons.get(pos).getID());
             holder.text.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +139,7 @@ public class ShowDetail extends AppCompatActivity {
                 public void onClick(View view) {
                     int id = (int) (view.getTag());
                     GoalData goal = mUserDataManager.fetchGoalDatasByID(id);
-                    goal.setCompleted(1-goal.getCompleted());
+                    goal.setCompleted(1 - goal.getCompleted());
                     mUserDataManager.updateGoalData(goal);
                     updateList();
                 }
@@ -148,6 +151,7 @@ public class ShowDetail extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_detail);
         findViewById(R.id.sub_goal_list).setFocusable(false);
@@ -182,7 +186,14 @@ public class ShowDetail extends AppCompatActivity {
                 dialogBuilder.show();
             }
         });
-
+        deleteGoal = (ImageView) findViewById(R.id.delete_goal);
+        deleteGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mUserDataManager.deleteGoalDatabyId(father.getID());
+                ShowDetail.this.finish();
+            }
+        });
 
         // 设置进度条相关操作
         final ProgressBar fatherProgress = (ProgressBar) findViewById(R.id.progress_bar);
@@ -234,6 +245,7 @@ public class ShowDetail extends AppCompatActivity {
             public void handle(String time) {
                 alertTimeTextView.setText(time);
                 father.setAlertTime(time);
+                setAlarm(time + ":00",father.getName(),father.getNote());
                 mUserDataManager.updateGoalData(father);
             }
         }, "2010-01-01 00:00", now);
@@ -263,7 +275,9 @@ public class ShowDetail extends AppCompatActivity {
                 String now = sdf.format(new Date());
                 if (Objects.equals(alertTimeTextView.getText().toString(), ""))
                     alertDatePicker.show(now);
-                else alertDatePicker.show(alertTimeTextView.getText().toString());
+                else {
+                    alertDatePicker.show(alertTimeTextView.getText().toString());
+                }
             }
         });
 
@@ -295,7 +309,7 @@ public class ShowDetail extends AppCompatActivity {
         // 任务优先级文本框相关操作
         final String[] importanceStrings = {"重要且紧急", "重要不紧急",
                 "紧急不重要", "不重要不紧急", "无"};
-        final int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.BLACK};
+        final int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.WHITE};
         fatherImportance = ((TextView) findViewById(R.id.goal_importance));
         fatherImportance.setText(importanceStrings[father.getImportance()]);
         fatherImportance.setTextColor(importanceColors[father.getImportance()]);
@@ -371,5 +385,21 @@ public class ShowDetail extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setAlarm(String alarmTime,String title, String note) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
+        long value = 0;
+        long value2 = System.currentTimeMillis();
+        System.out.println(alarmTime);
+        try {
+            date = sdf.parse(alarmTime);
+            value = date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int delaytime = (int) (value - value2);
+        AlarmService.addNotification(delaytime, "tick", title, note);
     }
 }
