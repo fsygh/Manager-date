@@ -164,13 +164,13 @@ public class GoalDataManager {
         if (condition.getID() != -1)
             conditionString += ID + "=" + condition.getID() + " AND ";
         if (!Objects.equals(condition.getStartTime(), ""))
-            conditionString += START_TIME + "=" + condition.getStartTime() + " AND ";
+            conditionString += START_TIME + "='" + condition.getStartTime() + "' AND ";
         if (!Objects.equals(condition.getEndTime(), ""))
-            conditionString += END_TIME + "=" + condition.getEndTime() + " AND ";
+            conditionString += END_TIME + "='" + condition.getEndTime() + "' AND ";
         if (!Objects.equals(condition.getAlertTime(), ""))
-            conditionString += ALERT_TIME + "=" + condition.getAlertTime() + " AND ";
+            conditionString += ALERT_TIME + "='" + condition.getAlertTime() + "' AND ";
         if (!Objects.equals(condition.getNote(), ""))
-            conditionString += NOTE + "=" + condition.getNote() + " AND ";
+            conditionString += NOTE + "='" + condition.getNote() + "' AND ";
         if (condition.getImportance() != -1)
             conditionString += IMPORTANCE + "=" + condition.getImportance() + " AND ";
         if (condition.getType() != -1)
@@ -180,10 +180,10 @@ public class GoalDataManager {
         if (condition.getSonNumber() != -1)
             conditionString += SON_NUMBER + "=" + condition.getSonNumber() + " AND ";
         if (!Objects.equals(condition.getUserName(), ""))
-            conditionString += USER_NAME + "=" + condition.getUserName() + " AND ";
+            conditionString += USER_NAME + "='" + condition.getUserName() + "' AND ";
         if (condition.getCompleted() != -1)
             conditionString += COMPLETED + "=" + condition.getCompleted() + " AND ";
-        conditionString += ID + "IS NOT NULL";
+        conditionString += ID + " IS NOT NULL";
 
         Cursor cursor = GoalDatabaseOperator.query(false, TABLE_NAME, null, conditionString,
                 null, null, null, null, null);
@@ -198,13 +198,13 @@ public class GoalDataManager {
         if (condition.getID() != -1)
             conditionString += ID + "=" + condition.getID() + " AND ";
         if (!Objects.equals(condition.getStartTime(), ""))
-            conditionString += START_TIME + "=" + condition.getStartTime() + " AND ";
+            conditionString += START_TIME + "='" + condition.getStartTime() + "' AND ";
         if (!Objects.equals(condition.getEndTime(), ""))
-            conditionString += END_TIME + "=" + condition.getEndTime() + " AND ";
+            conditionString += END_TIME + "='" + condition.getEndTime() + "' AND ";
         if (!Objects.equals(condition.getAlertTime(), ""))
-            conditionString += ALERT_TIME + "=" + condition.getAlertTime() + " AND ";
+            conditionString += ALERT_TIME + "='" + condition.getAlertTime() + "' AND ";
         if (!Objects.equals(condition.getNote(), ""))
-            conditionString += NOTE + "=" + condition.getNote() + " AND ";
+            conditionString += NOTE + "='" + condition.getNote() + "' AND ";
         if (condition.getImportance() != -1)
             conditionString += IMPORTANCE + "=" + condition.getImportance() + " AND ";
         if (condition.getType() != -1)
@@ -214,7 +214,7 @@ public class GoalDataManager {
         if (condition.getSonNumber() != -1)
             conditionString += SON_NUMBER + "=" + condition.getSonNumber() + " AND ";
         if (!Objects.equals(condition.getUserName(), ""))
-            conditionString += USER_NAME + "=" + condition.getUserName() + " AND ";
+            conditionString += USER_NAME + "='" + condition.getUserName() + "' AND ";
         if (condition.getCompleted() != -1)
             conditionString += COMPLETED + "=" + condition.getCompleted() + " AND ";
         conditionString += ID + " IS NOT NULL";
@@ -244,13 +244,13 @@ public class GoalDataManager {
         if (condition.getID() != -1)
             conditionString += ID + "=" + condition.getID() + " AND ";
         if (!Objects.equals(condition.getStartTime(), ""))
-            conditionString += START_TIME + "=" + condition.getStartTime() + " AND ";
+            conditionString += START_TIME + "='" + condition.getStartTime() + "' AND ";
         if (!Objects.equals(condition.getEndTime(), ""))
-            conditionString += END_TIME + "=" + condition.getEndTime() + " AND ";
+            conditionString += END_TIME + "='" + condition.getEndTime() + "' AND ";
         if (!Objects.equals(condition.getAlertTime(), ""))
-            conditionString += ALERT_TIME + "=" + condition.getAlertTime() + " AND ";
+            conditionString += ALERT_TIME + "='" + condition.getAlertTime() + "' AND ";
         if (!Objects.equals(condition.getNote(), ""))
-            conditionString += NOTE + "=" + condition.getNote() + " AND ";
+            conditionString += NOTE + "='" + condition.getNote() + "' AND ";
         if (condition.getImportance() != -1)
             conditionString += IMPORTANCE + "=" + condition.getImportance() + " AND ";
         if (condition.getType() != -1)
@@ -260,7 +260,7 @@ public class GoalDataManager {
         if (condition.getSonNumber() != -1)
             conditionString += SON_NUMBER + "=" + condition.getSonNumber() + " AND ";
         if (!Objects.equals(condition.getUserName(), ""))
-            conditionString += USER_NAME + "=" + condition.getUserName() + " AND ";
+            conditionString += USER_NAME + "='" + condition.getUserName() + "' AND ";
         if (condition.getCompleted() != -1)
             conditionString += COMPLETED + "=" + condition.getCompleted() + " AND ";
         conditionString += ID + " IS NOT NULL";
