@@ -36,5 +36,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
+        style="@style/Base.Widget.AppCompat.CompoundButton.CheckBox"
         android:focusable="false" />
 </RelativeLayout>

@@ -157,8 +157,13 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     private class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
 //        private Map<Integer, Boolean> checkboxMap = new HashMap<>();
 
-        private int[] importanceColors = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color
-                .WHITE};
+
+        private final int[] importanceColors = {Color.parseColor("#FF4500"),
+                Color.parseColor("#FFD700"),
+                Color.parseColor("#228B22"),
+                Color.parseColor("#6495ED"),
+                Color.parseColor("#F5F5F5")};
+
 
         //  获得某个父项的某个子项
         @Override
@@ -368,18 +373,6 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
             mUserDataManager = new GoalDataManager(this, "test");
             mUserDataManager.openGoalDatabase();                              //建立本地数据库
         }
-
-        mUserDataManager.deleteAllGoalDatas();
-        mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-12-12 04:55", "2017-11-11 11:11",
-                "2017-12-12 04:55", "this is note", 1, 2, 0, 0, "User", 0));
-        mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-12-12 04:55", "2017-11-11 11:11",
-                "2017-12-12 04:55", "this is note", 1, 2, 0, 0, "User", 0));
-        mUserDataManager.insertGoalData(new GoalData(-1, "task", "2017-12-12 04:55", "2017-11-11 11:11",
-                "2017-12-12 04:55", "this is note", 1, 2, 0, 0, "User", 0));
-        mUserDataManager.insertGoalData(new GoalData(-1, "action", "2017-12-12 04:55",
-                "2017-12-12 04:55", "2017-11-11 11:11", "this is note", 1, 3, 1, 0, "User", 0));
-        mUserDataManager.insertGoalData(new GoalData(-1, "action", "2017-12-12 04:55",
-                "2017-12-12 04:55", "2017-11-11 11:11", "this is note", 1, 3, 1, 0, "User", 0));
 
         parentList = mUserDataManager.fetchAllGoalDatasBy(new GoalData(-1, "", "", "", "",
                 "", -1, goalType, -1, -1, "", completed), order);
@@ -712,7 +705,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                 //start by lcfeng 2015-11-28
                 case 1:
                     pd.dismiss();
-                    Toast.makeText(mContext, "还没有设置上传服务器的路径！", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mContext, "还没有设置上传服务器的路径！", Toast.LENGTH_SHORT).show();
                     break;
                 //end by lcfeng 2015-11-28
                 default:

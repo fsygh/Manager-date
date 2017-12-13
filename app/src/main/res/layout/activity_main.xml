@@ -26,9 +26,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
             android:gravity="center"
-            android:text="Manage Goals"
+            android:text="Go Go Goal!"
             android:textColor="#ffffff"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="fill_parent"
