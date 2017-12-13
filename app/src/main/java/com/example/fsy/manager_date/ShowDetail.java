@@ -380,7 +380,7 @@ public class ShowDetail extends AppCompatActivity {
                         String name = inputServer.getText().toString();
                         mUserDataManager.insertGoalData(new GoalData(-1, name,
                                 "", "", "", "",
-                                4, father.getType() + 1, father.getID(), 0, "User", 0));
+                                4, father.getType() + 1, father.getID(), 0, father.getUserName(), 0));
                         father.setSonNumber(father.getSonNumber() + 1);
                         updateList();
                     }

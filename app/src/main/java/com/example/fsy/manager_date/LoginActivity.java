@@ -71,6 +71,7 @@ public class LoginActivity extends Activity implements OnClickListener {
                         editor.putString("PASSWORD", userPwd);
 
                         Intent intent = new Intent(LoginActivity.this,Welcomepage.class) ;    //切换Login Activity至User Activity
+                        intent.putExtra("userName", userName);
                         startActivity(intent);
                         finish();
                         Toast.makeText(this, getString(R.string.login_success),Toast.LENGTH_SHORT).show();//登录成功提示

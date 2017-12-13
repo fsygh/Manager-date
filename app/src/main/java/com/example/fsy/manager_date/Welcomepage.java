@@ -348,6 +348,7 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        userName = getIntent().getExtras().getString("userName");
         View view = findViewById(R.id.layout);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -443,11 +444,11 @@ public class Welcomepage extends AppCompatActivity implements NavigationView.OnN
                         if (selectedGoalID != -1) {
                             mUserDataManager.insertGoalData(new GoalData(-1, name,
                                     "", "", "", "",
-                                    4, goalType + 1, selectedGoalID, 0, "User", 0));
+                                    4, goalType + 1, selectedGoalID, 0, userName, 0));
                         } else {
                             mUserDataManager.insertGoalData(new GoalData(-1, name,
                                     "", "", "", "",
-                                    4, goalType, 0, 0, "User", 0));
+                                    4, goalType, 0, 0, userName, 0));
                         }
                         updateList();
 //                        Toast.makeText(Welcomepage.this, name, Toast.LENGTH_SHORT).show();
